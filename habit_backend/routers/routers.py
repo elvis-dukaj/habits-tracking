@@ -6,7 +6,7 @@ from schemas.habits import User, CreateUserResponse
 
 def create_habits_routers() -> APIRouter:
     user_routers = APIRouter(
-        prefix="/habit_tracking",
+        prefix="/habits_tracking",
         tags=["user"]
     )
 
