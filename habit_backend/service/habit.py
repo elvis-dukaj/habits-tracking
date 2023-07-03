@@ -1,4 +1,4 @@
-from habit_backend.schemas.habits import User, UserResponse, Habit
+from schemas.habits import User, UserResponse, Habit
 
 
 class HabitsTrackingService:
