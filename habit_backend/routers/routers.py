@@ -27,4 +27,8 @@ def create_user_routers() -> APIRouter:
         user_response = habit_service.get_user_info_by_username(username)
         return user_response
 
+    @user_routers.delete("/{user_id}")
+    def delete_user(user_id: int):
+        habit_service.delete_user(user_id)
+
     return user_routers

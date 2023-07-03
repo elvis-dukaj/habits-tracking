@@ -48,6 +48,9 @@ class HabitsTrackingService:
         self._user_db[self._current_id] = dict(user)
         return CreateUserResponse(user_id=self._current_id)
 
+    def delete_user(self, user_id: int) -> None:
+        del self._user_db[user_id]
+
     def get_user_info_by_id(self, user_id: int) -> User:
         user = self._user_db[user_id]
         reply = User(**user)
@@ -59,5 +62,3 @@ class HabitsTrackingService:
             current_user = self._user_db[user]
             if current_user["username"] == username:
                 return User(**current_user)
-
-
