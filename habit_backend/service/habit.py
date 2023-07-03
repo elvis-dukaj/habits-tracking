@@ -1,4 +1,8 @@
-from schemas.habits import User, UserResponse, Habit
+from schemas.habits import (
+    User,
+    CreateUserResponse,
+    Habit
+)
 
 
 class HabitsTrackingService:
@@ -39,19 +43,14 @@ class HabitsTrackingService:
         }
         self._habit_current_id = len(self._habits_db)
 
-    def create_user(self, user: User) -> int:
+    def create_user(self, user: User) -> CreateUserResponse:
         self._current_id += 1
-        self._db[self._current_id] = dict(user)
-        return self._current_id
+        self._user_db[self._current_id] = dict(user)
+        return CreateUserResponse(user_id=self._current_id)
 
-    def get_user_info(self, user_id: int) -> UserResponse:
-        user = self._db[user_id]
-        data = {
-            "username": user["username"],
-            "email": user["email"]
-        }
-
-        reply = UserResponse(**data)
+    def get_user_info(self, user_id: int) -> User:
+        user = self._user_db[user_id]
+        reply = User(**user)
         return reply
 
     def create_habit(self, user_id, habit: Habit):
