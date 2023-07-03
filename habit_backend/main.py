@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 
-from routers.routers import create_habits_routers
+from routers.routers import create_user_routers
 
 
 def create_service():
     fast_api = FastAPI()
 
-    habits_routers = create_habits_routers()
+    habits_routers = create_user_routers()
 
     fast_api.include_router(habits_routers)
 

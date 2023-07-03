@@ -4,9 +4,9 @@ from service.habit import HabitsTrackingService
 from schemas.habits import User, CreateUserResponse
 
 
-def create_habits_routers() -> APIRouter:
+def create_user_routers() -> APIRouter:
     user_routers = APIRouter(
-        prefix="/habits_tracking",
+        prefix="/habits_tracking/user",
         tags=["user"]
     )
 
@@ -17,9 +17,14 @@ def create_habits_routers() -> APIRouter:
         response = habit_service.create_user(user)
         return response
 
-    @user_routers.get("/user/{user_id}", response_model=User)
+    @user_routers.get("/get_by_id/{user_id}", response_model=User)
     def get_user_by_id(user_id: int):
-        user_response = habit_service.get_user_info(user_id)
+        user_response = habit_service.get_user_info_by_id(user_id)
+        return user_response
+
+    @user_routers.get("/get_by_username/{username}", response_model=User)
+    def get_user_by_username(username: str):
+        user_response = habit_service.get_user_info_by_username(username)
         return user_response
 
     return user_routers

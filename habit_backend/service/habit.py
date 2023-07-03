@@ -48,10 +48,16 @@ class HabitsTrackingService:
         self._user_db[self._current_id] = dict(user)
         return CreateUserResponse(user_id=self._current_id)
 
-    def get_user_info(self, user_id: int) -> User:
+    def get_user_info_by_id(self, user_id: int) -> User:
         user = self._user_db[user_id]
         reply = User(**user)
         return reply
 
-    def create_habit(self, user_id, habit: Habit):
-        pass
+    def get_user_info_by_username(self, username: str) -> User:
+        for user in self._user_db:
+            print(user)
+            current_user = self._user_db[user]
+            if current_user["username"] == username:
+                return User(**current_user)
+
+
