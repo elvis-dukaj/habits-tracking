@@ -1,8 +1,8 @@
 from schemas.habits import (
     User,
-    CreateUserResponse,
-    Habit
+    CreateUserResponse
 )
+from exception import UserNotFoundError
 
 
 class HabitsTrackingService:
@@ -49,9 +49,15 @@ class HabitsTrackingService:
         return CreateUserResponse(user_id=self._current_id)
 
     def delete_user(self, user_id: int) -> None:
+        if user_id not in self._user_db:
+            raise UserNotFoundError
+
         del self._user_db[user_id]
 
     def get_user_info_by_id(self, user_id: int) -> User:
+        if user_id not in self._user_db:
+            raise UserNotFoundError()
+
         user = self._user_db[user_id]
         reply = User(**user)
         return reply
@@ -62,3 +68,6 @@ class HabitsTrackingService:
             current_user = self._user_db[user]
             if current_user["username"] == username:
                 return User(**current_user)
+
+        raise UserNotFoundError()
+
