@@ -15,9 +15,11 @@ def create_service():
 
     user_routers = create_user_routers(habit_service)
     habit_routers = create_habit_routers(habit_service)
+    habit_event_router = create_habit_event_routers(habit_service)
 
     fast_api.include_router(user_routers)
     fast_api.include_router(habit_routers)
+    fast_api.include_router(habit_event_router)
     add_exception_handler(service=fast_api)
 
     return fast_api

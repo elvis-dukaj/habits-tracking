@@ -1,11 +1,7 @@
-from schemas.user import (
-    User,
-    CreateUserResponse
-)
-from schemas.habit import (
-    Habit,
-    CreateHabitResponse,
-)
+from schemas.user import User
+from schemas.habit import Habit
+from schemas.habit_event import HabitEvent
+
 from exception import UserNotFoundError
 from db.client import DatabaseClient
 
@@ -14,9 +10,9 @@ class HabitsTrackingService:
     def __init__(self, db: DatabaseClient):
         self._db = db
 
-    def create_user(self, user: User) -> CreateUserResponse:
-        user_id = self._db.add_user(user)
-        return CreateUserResponse(user_id=user_id)
+    def create_user(self, user: User) -> User:
+        full_user = self._db.add_user(user)
+        return full_user
 
     def delete_user(self, user_id: int) -> None:
         self._db.delete_user(user_id)
@@ -30,8 +26,8 @@ class HabitsTrackingService:
         return user
 
     def create_habit(self, habit: Habit):
-        habit_id = self._db.create_habit(habit)
-        return CreateHabitResponse(id=habit_id)
+        habit = self._db.create_habit(habit)
+        return habit
 
     def delete_habit(self, habit_id: int) -> None:
         self._db.delete_habit(habit_id)
@@ -47,3 +43,7 @@ class HabitsTrackingService:
     def get_habits_by_user_id(self, user_id: int) -> list[Habit]:
         reply = self._db.get_habits_by_user_id(user_id)
         return reply
+
+    def mark_habit_completed(self, user_id: int, habit_id: int) -> HabitEvent:
+        event = self._db.add_habit_event(user_id, habit_id)
+        return event

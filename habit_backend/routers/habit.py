@@ -1,16 +1,16 @@
 from fastapi import APIRouter
 
-from service.habit import HabitsTrackingService
-from schemas.habit import Habit, CreateHabitResponse
+from service.habit_tracker import HabitsTrackingService
+from schemas.habit import Habit
 
 
 def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
     routers = APIRouter(
         prefix="/habit",
-        tags=["habit"]
+        tags=["habit_event"]
     )
 
-    @routers.post("/", response_model=CreateHabitResponse, status_code=201)
+    @routers.post("/", response_model=Habit, status_code=201)
     def create(habit: Habit):
         response = habit_service.create_habit(habit)
         return response
