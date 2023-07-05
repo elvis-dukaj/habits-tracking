@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from service.habit import HabitsTrackingService
-from schemas.habit import Habit, CreateHabitResponse, MultipleHabitResponse
+from schemas.habit import Habit, CreateHabitResponse
 
 
 def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
@@ -15,7 +15,7 @@ def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
         response = habit_service.create_habit(habit)
         return response
 
-    @routers.get("/get_by_id/all", response_model=MultipleHabitResponse)
+    @routers.get("/get_by_id/all", response_model=list[Habit])
     def get_all():
         response = habit_service.get_all_habits()
         return response
@@ -25,7 +25,7 @@ def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
         response = habit_service.get_habit_by_id(id)
         return response
 
-    @routers.get("/get_by_user_id/{user_id}", response_model=MultipleHabitResponse)
+    @routers.get("/get_by_user_id/{user_id}", response_model=list[Habit])
     def get_by_user_id(user_id: int):
         reply = habit_service.get_habits_by_user_id(user_id)
         return reply

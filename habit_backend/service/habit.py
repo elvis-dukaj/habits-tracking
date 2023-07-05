@@ -5,7 +5,6 @@ from schemas.user import (
 from schemas.habit import (
     Habit,
     CreateHabitResponse,
-    MultipleHabitResponse
 )
 from exception import UserNotFoundError
 from db.client import DatabaseClient
@@ -41,10 +40,10 @@ class HabitsTrackingService:
         habit = self._db.get_habit_by_id(id)
         return habit
 
-    def get_all_habits(self) -> MultipleHabitResponse:
+    def get_all_habits(self) -> list[Habit]:
         habits = self._db.get_all_habits()
         return habits
 
-    def get_habits_by_user_id(self, user_id: int):
+    def get_habits_by_user_id(self, user_id: int) -> list[Habit]:
         reply = self._db.get_habits_by_user_id(user_id)
         return reply

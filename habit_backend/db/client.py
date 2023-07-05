@@ -1,5 +1,5 @@
 from schemas.user import User
-from schemas.habit import Habit, MultipleHabitResponse
+from schemas.habit import Habit
 from exception import UserNotFoundError, HabitNotFoundError
 
 
@@ -98,19 +98,17 @@ class DatabaseClient():
         reply = Habit(**habit)
         return reply
 
-    def get_all_habits(self) -> MultipleHabitResponse:
-        habit_ids = self._habits_db.keys()
-        habit_values = self._habits_db.values()
-        print(f"habit_ids: {habit_ids}")
-        print(f"habit_values: {habit_values}")
-        response = MultipleHabitResponse()
-        response.habits = []
-        return response
+    def get_all_habits(self) -> list[Habit]:
+        habit_values = list(self._habits_db.values())
+        return [*habit_values]
 
-    def get_habits_by_user_id(self, user_id: int) -> MultipleHabitResponse:
-        response = MultipleHabitResponse()
+    def get_habits_by_user_id(self, user_id: int) -> list[Habit]:
+        result = []
+        habit_values = list(self._habits_db.values())
+        for habit_json in habit_values:
+            habit = Habit(**habit_json)
+            if habit.user_id == user_id:
+                result.append(habit)
 
-        for habit in self._habits_db:
-            response.habits.append()
+        return result
 
-        return MultipleHabitResponse()

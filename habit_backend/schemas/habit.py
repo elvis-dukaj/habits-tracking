@@ -20,5 +20,5 @@ class CreateHabitResponse(BaseModel):
 #     periodicity: str
 
 
-class MultipleHabitResponse(BaseModel):
-    habits: list[Habit]
+# class MultipleHabitResponse(BaseModel):
+#     habits: list[Habit]
