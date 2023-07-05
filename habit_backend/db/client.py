@@ -6,7 +6,7 @@ from schemas.habit_event import HabitEvent
 from exception import UserNotFoundError, HabitNotFoundError
 
 
-class DatabaseClient():
+class DatabaseClient:
     def __init__(self):
         self._user_db = {
             1: {

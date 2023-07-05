@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 
-from service.habit import HabitsTrackingService
+from service.habit_tracker import HabitsTrackingService
 from routers.user import create_user_routers
 from routers.habit import create_habit_routers
+from routers.habit_event import create_habit_event_routers
 from exception_handler import add_exception_handler
 from db.client import DatabaseClient
 

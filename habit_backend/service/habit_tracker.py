@@ -2,7 +2,6 @@ from schemas.user import User
 from schemas.habit import Habit
 from schemas.habit_event import HabitEvent
 
-from exception import UserNotFoundError
 from db.client import DatabaseClient
 
 
