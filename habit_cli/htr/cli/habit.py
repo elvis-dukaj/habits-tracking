@@ -1,5 +1,6 @@
 import click
 
+
 @click.group()
 @click.option("--user-id", "user_id", type=click.INT, help="user")
 def habit(user_id: int):

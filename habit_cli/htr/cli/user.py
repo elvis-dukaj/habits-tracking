@@ -6,23 +6,20 @@ def user():
     pass
 
 
-@click.command()
-def create(username: str, email: str):
-    pass
+@user.command()
+@click.option("--username", prompt=True, help="Username")
+def create(username: str):
+    click.echo(f"username {username} created with id 1")
 
 
-@click.command()
-def delete(username: str, email: str):
-    pass
+@user.command()
+@click.option("--user-id", prompt=True, help="Username")
+def delete(user_id: int):
+    click.echo(f"Deleting user {user_id}")
 
 
-@click.command()
-@click.option("--username", help="user to login")
+@user.command()
+@click.option("--username", prompt=True, help="user to login")
 def login(username: str):
     user_id = 1
     click.echo(f"user id: {user_id}")
-
-
-user.add_command(create)
-user.add_command(delete)
-user.add_command(login)
