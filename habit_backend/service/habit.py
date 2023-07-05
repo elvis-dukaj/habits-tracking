@@ -1,4 +1,4 @@
-from schemas.habits import (
+from schemas.user import (
     User,
     CreateUserResponse
 )

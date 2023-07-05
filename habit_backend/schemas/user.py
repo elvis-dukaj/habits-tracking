@@ -6,11 +6,6 @@ class User(BaseModel):
     email: str
 
 
-class Habit(BaseModel):
-    task: str
-    periodicity: int
-
-
 class MultipleUserResponse(BaseModel):
     users: list[User]
 
