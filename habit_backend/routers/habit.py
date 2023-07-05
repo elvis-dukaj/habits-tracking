@@ -20,9 +20,9 @@ def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
         response = habit_service.get_all_habits()
         return response
 
-    @routers.get("/get_by_id/{id}", response_model=Habit)
-    def get_by_id(id: int):
-        response = habit_service.get_habit_by_id(id)
+    @routers.get("/get_by_id/{habit_id}", response_model=Habit)
+    def get_by_id(habit_id: int):
+        response = habit_service.get_habit_by_id(habit_id)
         return response
 
     @routers.get("/get_by_user_id/{user_id}", response_model=list[Habit])
@@ -30,8 +30,8 @@ def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:
         reply = habit_service.get_habits_by_user_id(user_id)
         return reply
 
-    @routers.delete("/{id}")
-    def delete(id: int):
-        habit_service.delete_habit(id)
+    @routers.delete("/{habit_id}")
+    def delete(habit_id: int):
+        habit_service.delete_habit(habit_id)
 
     return routers

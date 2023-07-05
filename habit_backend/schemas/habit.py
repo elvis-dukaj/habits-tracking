@@ -10,15 +10,3 @@ class Habit(BaseModel):
 
 class CreateHabitResponse(BaseModel):
     id: int
-
-
-# class HabitResponse(BaseModel):
-#     id: int
-#     user_id: int
-#     task: str
-#     description: str
-#     periodicity: str
-
-
-# class MultipleHabitResponse(BaseModel):
-#     habits: list[Habit]

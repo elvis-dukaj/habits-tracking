@@ -15,9 +15,9 @@ def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
         response = habit_service.create_user(user)
         return response
 
-    @routers.get("/get_by_id/{id}", response_model=User)
+    @routers.get("/get_by_id/{user_id}", response_model=User)
     def get_by_id(id: int):
-        user_response = habit_service.get_user_by_id(id)
+        user_response = habit_service.get_user_by_id(user_id)
         return user_response
 
     @routers.get("/get_by_username/{username}", response_model=User)
@@ -25,8 +25,8 @@ def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
         user_response = habit_service.get_user_by_username(username)
         return user_response
 
-    @routers.delete("/{id}")
-    def delete(id: int):
-        habit_service.delete_user(id)
+    @routers.delete("/{user_id}")
+    def delete(user_id: int):
+        habit_service.delete_user(user_id)
 
     return routers
