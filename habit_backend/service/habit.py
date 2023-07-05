@@ -2,72 +2,49 @@ from schemas.user import (
     User,
     CreateUserResponse
 )
+from schemas.habit import (
+    Habit,
+    CreateHabitResponse,
+    MultipleHabitResponse
+)
 from exception import UserNotFoundError
+from db.client import DatabaseClient
 
 
 class HabitsTrackingService:
-    def __init__(self):
-        self._user_db = {
-            1: {
-                "username": "elvis.dukaj",
-                "email": "elvis.dukaj@gmail.com"
-            },
-            2: {
-                "username": "stefanie.zoechmann",
-                "email": "stefanie.zoechmann@gmail.com"
-            }
-        }
-        self._current_id = len(self._user_db)
-
-        self._habits_db = {
-            1: {
-                "task": "stretch the legs",
-                "frequency": 1
-            },
-            2: {
-                "task": "boulder",
-                "periodicity": 3
-            },
-            3: {
-                "task": "study",
-                "frequency": 2
-            },
-            4: {
-                "task": "call nonna",
-                "frequency": 14
-            },
-            5: {
-                "task": "massage the neck",
-                "frequency": 7
-            },
-        }
-        self._habit_current_id = len(self._habits_db)
+    def __init__(self, db: DatabaseClient):
+        self._db = db
 
     def create_user(self, user: User) -> CreateUserResponse:
-        self._current_id += 1
-        self._user_db[self._current_id] = dict(user)
-        return CreateUserResponse(user_id=self._current_id)
+        user_id = self._db.add_user(user)
+        return CreateUserResponse(user_id=user_id)
 
-    def delete_user(self, user_id: int) -> None:
-        if user_id not in self._user_db:
-            raise UserNotFoundError
+    def delete_user(self, id: int) -> None:
+        self._db.delete_user(id)
 
-        del self._user_db[user_id]
+    def get_user_by_id(self, id: int) -> User:
+        user = self._db.get_user_by_id(id)
+        return user
 
-    def get_user_info_by_id(self, user_id: int) -> User:
-        if user_id not in self._user_db:
-            raise UserNotFoundError()
+    def get_user_by_username(self, username: str) -> User:
+        user = self._db.get_user_by_username(username)
+        return user
 
-        user = self._user_db[user_id]
-        reply = User(**user)
+    def create_habit(self, habit: Habit):
+        habit_id = self._db.create_habit(habit)
+        return CreateHabitResponse(id=habit_id)
+
+    def delete_habit(self, id: int) -> None:
+        self._db.delete_habit(id)
+
+    def get_habit_by_id(self, id: int) -> Habit:
+        habit = self._db.get_habit_by_id(id)
+        return habit
+
+    def get_all_habits(self) -> MultipleHabitResponse:
+        habits = self._db.get_all_habits()
+        return habits
+
+    def get_habits_by_user_id(self, user_id: int):
+        reply = self._db.get_habits_by_user_id(user_id)
         return reply
-
-    def get_user_info_by_username(self, username: str) -> User:
-        for user in self._user_db:
-            print(user)
-            current_user = self._user_db[user]
-            if current_user["username"] == username:
-                return User(**current_user)
-
-        raise UserNotFoundError()
-
