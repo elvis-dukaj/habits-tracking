@@ -2,9 +2,9 @@ import click
 
 
 @click.group()
-@click.option("--user-id", "user_id", type=click.INT, help="user")
+@click.option("--user-id", "user_id", envvar="HABIT_TRACKER_USER_ID", type=click.INT, help="user")
 def habit(user_id: int):
-    click.echo("habit group")
+    click.echo(f"habit group with {user_id}")
 
 
 @habit.command()

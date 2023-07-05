@@ -5,11 +5,7 @@ import plotext as plot
 
 
 @click.group()
-@click.option("--user-id", "user_id", type=click.INT, help="filter by habit id")
-# @click.option("--habit-id", "habit_id", type=click.INT, help="filter by habit id")
-# @click.option("--show-progress", "show_progress", is_flag=True, help="filter by habit id")
-# @click.option("--start-date", type=click.DateTime, default=datetime., help="filter events from the start date")
-# @click.option("--end-date", type=click.DateTime, help="filter events from the start date")
+@click.option("--user-id", "user_id", type=click.INT, envvar="HABIT_TRACKER_USER_ID", help="filter by habit id")
 def streak(user_id: int):
     click.echo(f"streak for user {user_id}")
 
