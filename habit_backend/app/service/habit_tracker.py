@@ -1,8 +1,8 @@
-from schemas.user import User
-from schemas.habit import Habit
-from schemas.habit_event import HabitEvent
+from app.schemas.user import User
+from app.schemas.habit import Habit
+from app.schemas.habit_event import HabitEvent
 
-from db.client import DatabaseClient
+from app.db.client import DatabaseClient
 
 
 class HabitsTrackingService:

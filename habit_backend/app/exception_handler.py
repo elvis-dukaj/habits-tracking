@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 
-from exception import UserNotFoundError
+from app.exception import UserNotFoundError
 
 
 def add_exception_handler(service: FastAPI) -> None:

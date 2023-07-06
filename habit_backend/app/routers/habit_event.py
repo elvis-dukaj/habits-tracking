@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from service.habit_tracker import HabitsTrackingService
-from schemas.habit_event import HabitEvent
+from app.service.habit_tracker import HabitsTrackingService
+from app.schemas.habit_event import HabitEvent
 
 
 def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRouter:

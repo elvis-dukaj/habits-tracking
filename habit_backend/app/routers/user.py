@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from service.habit_tracker import HabitsTrackingService
-from schemas.user import User
+from app.service.habit_tracker import HabitsTrackingService
+from app.schemas.user import User
 
 
 def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
