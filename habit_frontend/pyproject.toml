@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=46.1.0", "setuptools_scm[toml]>=5"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "htr"
+version = "0.1.0"
+
+authors = [
+    { name = "Elvis Dukaj", email = "elvis.dukaj@iu-study.org" }
+]
+
+description = "Command line interface for habit tracker"
+
+dependencies = [
+    "Click", "plotext", "tabulate", "wheel"
+]
+
+scripts = { htr = "htr.cli.cli:cli" }
+

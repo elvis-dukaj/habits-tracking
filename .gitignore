@@ -1,8 +1,10 @@
-# CLion/PyCharm
+# IDEs
 **/.idea
-
 **/__pycache__
 
 # venv
 **/.venv
 **/*.egg-info
+
+# temporary build folders
+habit_frontend/build
