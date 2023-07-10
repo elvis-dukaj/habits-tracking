@@ -37,6 +37,6 @@ def create_app(service: HabitsTrackingService):
 
     return fast_api
 
-#
-# conf = Config()
-# service = create_service(conf)
+
+conf = Config()
+service = create_service(conf)
