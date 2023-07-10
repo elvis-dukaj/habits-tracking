@@ -38,3 +38,24 @@ def mock_application(mock_database):
 @pytest.fixture
 def user_url():
     return "/user"
+
+
+@pytest.fixture
+def valid_username():
+    return "olta"
+
+
+@pytest.fixture
+def valid_user_data(valid_username):
+    json = {
+        "username": valid_username,
+        "email": "olta",
+        "user_id": None,
+        "created_at": None,
+    }
+    return json
+
+
+@pytest.fixture
+def valid_user_by_username_url(user_url, valid_username):
+    return f"{user_url}/get_by_username/{valid_username}"
