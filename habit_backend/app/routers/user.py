@@ -15,10 +15,10 @@ def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
         response = habit_service.create_user(user)
         return response
 
-    # @routers.get("/get_by_id/{user_id}", response_model=User)
-    # def get_by_id(user_id: int):
-    #     user_response = habit_service.get_user_by_id(user_id)
-    #     return user_response
+    @routers.get("/get_by_id/{user_id}", response_model=User)
+    def get_by_id(user_id: int):
+        user_response = habit_service.get_user_by_id(user_id)
+        return user_response
 
     @routers.get("/get_by_username/{username}", response_model=User)
     def get_by_username(username: str):
