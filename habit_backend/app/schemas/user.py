@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 class User(BaseModel):
     user_id: Optional[int]
-    created_at: Optional[datetime.date]
+    # created_at: Optional[datetime.date]
     username: str
     email: str
-
