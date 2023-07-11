@@ -16,19 +16,19 @@ class DatabaseClient:
 
     def add_user(self, user: User) -> User:
         sql_command = "INSERT INTO user_account(username, email) VALUES(?, ?)"
-        args: tuple[str, str] = (user.username, user.email)
+        sql_args: tuple[str, str] = (user.username, user.email)
 
-        self._cursor.execute(sql_command, args)
+        self._cursor.execute(sql_command, sql_args)
         self._connection.commit()
         created_user_id = self._cursor.lastrowid
 
         return self.get_user_by_id(created_user_id)
 
     def delete_user(self, user_id):
-        sql_comman = "DELETE FROM user_account WHERE user_id = ?"
+        sql_command = "DELETE FROM user_account WHERE user_id = ?"
         sql_args: tuple[str] = (user_id,)
 
-        self._cursor.execute(sql_comman, sql_args)
+        self._cursor.execute(sql_command, sql_args)
         self._connection.commit()
 
     def get_user_by_id(self, user_id: int) -> User:
