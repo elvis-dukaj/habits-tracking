@@ -8,3 +8,6 @@
 
 # temporary build folders
 habit_frontend/build
+
+# mac temporary files
+**/.DS_Store
