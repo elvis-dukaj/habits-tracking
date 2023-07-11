@@ -24,12 +24,12 @@ class DatabaseClient:
 
         return self.get_user_by_id(created_user_id)
 
-    def delete_user(self, id):
-        pass
-        # if id not in self._user_db:
-        #     raise UserNotFoundError
-        #
-        # del self._user_db[id]
+    def delete_user(self, user_id):
+        sql_comman = "DELETE FROM user_account WHERE user_id = ?"
+        sql_args: tuple[str] = (user_id,)
+
+        self._cursor.execute(sql_comman, sql_args)
+        self._connection.commit()
 
     def get_user_by_id(self, user_id: int) -> User:
         sql_command = """

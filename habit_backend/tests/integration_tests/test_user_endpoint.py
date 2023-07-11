@@ -39,12 +39,12 @@ def test_get_user_by_user_id(mock_application, valid_user_by_user_id_url, valid_
     assert olta_user.user_id == valid_user.user_id
 
 
-# def test_user_can_be_deleted(mock_application, valid_delete_by_user_id, valid_user_by_user_id_url):
-#     response = mock_application.delete(url=valid_delete_by_user_id)
-#     assert response.status_code == 200
-#
-#     response = mock_application.get(url=valid_user_by_user_id_url)
-#     assert response.status_code != 200
+def test_user_can_be_deleted(mock_application, valid_delete_by_user_id, valid_user_by_user_id_url):
+    response = mock_application.delete(url=valid_delete_by_user_id)
+    assert response.status_code == 200
+
+    response = mock_application.get(url=valid_user_by_user_id_url)
+    assert response.status_code != 200
 
 
 def test_get_invalid_username_returns_error(mock_application, invalid_user_by_username_url):
