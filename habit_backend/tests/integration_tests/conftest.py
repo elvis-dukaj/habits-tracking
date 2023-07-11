@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from main import create_service, create_app
 from app.config import Config
+from app.schemas.user import User
 from app.db.client import DatabaseClient
 from models.create_tables import create_tables, drop_tables
 
@@ -41,19 +42,28 @@ def user_url():
 
 
 @pytest.fixture
+def valid_user_id():
+    return 1
+
+
+@pytest.fixture
 def valid_username():
     return "olta"
 
 
 @pytest.fixture
-def valid_user_data(valid_username):
-    json = {
-        "username": valid_username,
-        "email": "olta",
-        "user_id": None,
-        "created_at": None,
-    }
-    return json
+def valid_user_email():
+    return "olta"
+
+
+@pytest.fixture
+def valid_user(valid_user_id, valid_username, valid_user_email):
+    user = User(
+        user_id=valid_user_id,
+        username=valid_username,
+        email=valid_user_email
+    )
+    return user
 
 
 @pytest.fixture
