@@ -3,6 +3,7 @@ from sqlmodel import Session, select
 from app.schemas.user import UserCreate, UserRead, User
 from app.exception import UserNotFoundError
 
+
 class DatabaseClient:
     def __init__(self, engine):
         self.engine = engine
@@ -16,13 +17,11 @@ class DatabaseClient:
             session.refresh(db_hero)
             return db_hero
 
-    #
-    # def delete_user(self, user_id):
-    #     sql_command = "DELETE FROM user_account WHERE user_id = ?"
-    #     sql_args: tuple[str] = (user_id,)
-    #
-    #     self._cursor.execute(sql_command, sql_args)
-    #     self._connection.commit()
+    def delete_user(self, user_id):
+        with Session(self.engine) as session:
+            user_to_delete = self.get_user_by_id(user_id)
+            session.delete(user_to_delete)
+            session.commit()
 
     def get_user_by_id(self, user_id: int) -> UserRead:
         with Session(self.engine) as session:
@@ -39,22 +38,6 @@ class DatabaseClient:
                 raise UserNotFoundError()
 
             return user
-
-
-        # sql_command = """
-        # SELECT * FROM user_account
-        # WHERE username = ?
-        # """
-        # sql_args = (username,)
-        # self._cursor.execute(sql_command, sql_args)
-        #
-        # row = self._cursor.fetchone()
-        #
-        # if row is None:
-        #     raise UserNotFoundError()
-        #
-        # user = User(**row)
-        # return user
 
     # def create_habit(self, habit: Habit) -> Habit:
     #     # self._current_habit_id += 1
