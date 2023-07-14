@@ -1,4 +1,4 @@
-from app.schemas.user import User
+from app.schemas.user import UserCreate, UserRead
 from app.db.client import DatabaseClient
 
 
@@ -6,7 +6,7 @@ class HabitsTrackingService:
     def __init__(self, db: DatabaseClient):
         self._db = db
 
-    def create_user(self, user: User) -> User:
+    def create_user(self, user: UserCreate) -> UserRead:
         response = self._db.add_user(user)
         return response
 

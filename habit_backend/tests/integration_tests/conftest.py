@@ -76,7 +76,6 @@ def valid_user(valid_user_id, valid_username, valid_user_email):
 @pytest.fixture
 def valid_user_request_json(valid_username, valid_user_email):
     user = {
-        "user_id": None,
         "username": valid_username,
         "email": valid_user_email
     }

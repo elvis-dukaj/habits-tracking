@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.service.habit_tracker import HabitsTrackingService
-from app.schemas.user import User
+from app.schemas.user import UserCreate, UserRead
 
 
 def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
@@ -10,8 +10,8 @@ def create_user_routers(habit_service: HabitsTrackingService) -> APIRouter:
         tags=["user"],
     )
 
-    @routers.post("/", response_model=User, status_code=201)
-    def create(user: User):
+    @routers.post("/", response_model=UserRead, status_code=201)
+    def create(user: UserCreate):
         response = habit_service.create_user(user)
         return response
 

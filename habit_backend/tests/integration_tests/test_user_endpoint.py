@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas.user import User
+from app.schemas.user import UserRead, UserCreate
 
 
 def test_user_create_success(mock_application, user_url, valid_user_request_json):
@@ -9,22 +9,20 @@ def test_user_create_success(mock_application, user_url, valid_user_request_json
     body = response.json()
     assert body is not None
 
-    created_user = User(**response.json())
+    created_user = UserRead(**response.json())
 
     # assert created_user.user_id == valid_user_request.user_id
     assert created_user.user_id is not None
     assert response.status_code == 201
 
-# def test_get_user_by_username(mock_application, valid_user_by_username_url, valid_user):
+
+# def test_get_user_by_username(mock_application, valid_user_by_username_url, valid_username):
 #     response = mock_application.get(url=valid_user_by_username_url)
-#     olta_user = User(**response.json())
+#     olta_user = UserCreate(**response.json())
 #
-#     assert olta_user.user_id == valid_user.user_id
-#     assert olta_user.username == valid_user.username
-#     assert olta_user.email == valid_user.email
+#     assert olta_user. == valid_username
 #     assert response.status_code == 200
-#
-#
+
 # def test_get_user_by_user_id(mock_application, valid_user_by_user_id_url, valid_user):
 #     response = mock_application.get(url=valid_user_by_user_id_url)
 #     olta_user = User(**response.json())

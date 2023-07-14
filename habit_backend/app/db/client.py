@@ -1,19 +1,21 @@
 from sqlmodel import create_engine, Session
 
-from app.schemas.user import User
+from app.schemas.user import UserCreate, UserRead, User
 
 
 class DatabaseClient:
     def __init__(self, engine):
         self.engine = engine
 
-    def add_user(self, user: User) -> User:
+    def add_user(self, user: UserCreate) -> UserRead:
         created_user = user
         with Session(self.engine) as session:
-            session.add(created_user)
+            db_hero = User.from_orm(user)
+            session.add(db_hero)
             session.commit()
-            session.refresh(created_user)
-        return created_user
+            session.refresh(db_hero)
+            return db_hero
+
     #
     # def delete_user(self, user_id):
     #     sql_command = "DELETE FROM user_account WHERE user_id = ?"
