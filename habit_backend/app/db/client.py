@@ -1,7 +1,7 @@
-from sqlmodel import create_engine, Session
+from sqlmodel import Session, select
 
 from app.schemas.user import UserCreate, UserRead, User
-
+from app.exception import UserNotFoundError
 
 class DatabaseClient:
     def __init__(self, engine):
@@ -29,13 +29,25 @@ class DatabaseClient:
             user = session.get(User, user_id)
             return user
 
+    def get_user_by_username(self, username: str) -> UserRead:
+        with Session(self.engine) as session:
+            statement = select(User).where(User.username == username)
+            result = session.exec(statement)
+            user = result.first()
+
+            if user is None:
+                raise UserNotFoundError()
+
+            return user
+
+
         # sql_command = """
         # SELECT * FROM user_account
-        # WHERE user_id = ?
+        # WHERE username = ?
         # """
-        # sql_args = (user_id,)
-        #
+        # sql_args = (username,)
         # self._cursor.execute(sql_command, sql_args)
+        #
         # row = self._cursor.fetchone()
         #
         # if row is None:
@@ -44,22 +56,6 @@ class DatabaseClient:
         # user = User(**row)
         # return user
 
-    # def get_user_by_username(self, username: str) -> User:
-    #     sql_command = """
-    #     SELECT * FROM user_account
-    #     WHERE username = ?
-    #     """
-    #     sql_args = (username,)
-    #     self._cursor.execute(sql_command, sql_args)
-    #
-    #     row = self._cursor.fetchone()
-    #
-    #     if row is None:
-    #         raise UserNotFoundError()
-    #
-    #     user = User(**row)
-    #     return user
-    #
     # def create_habit(self, habit: Habit) -> Habit:
     #     # self._current_habit_id += 1
     #     # self._habits_db[self._current_habit_id] = dict(habit)

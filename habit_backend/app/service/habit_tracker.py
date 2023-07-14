@@ -17,10 +17,10 @@ class HabitsTrackingService:
         user = self._db.get_user_by_id(user_id)
         return user
 
-    # def get_user_by_username(self, username: str) -> User:
-    #     user = self._db.get_user_by_username(username)
-    #     return user
-    #
+    def get_user_by_username(self, username: str) -> UserRead:
+        user = self._db.get_user_by_username(username)
+        return user
+
     # def create_habit(self, habit: Habit):
     #     habit = self._db.create_habit(habit)
     #     return habit

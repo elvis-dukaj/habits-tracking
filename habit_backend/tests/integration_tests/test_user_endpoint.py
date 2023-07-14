@@ -21,15 +21,9 @@ def test_user_create_success(mock_application, user_url, valid_user_id, valid_us
     assert response.status_code == 201
 
 
-# def test_get_user_by_username(mock_application, valid_user_by_username_url, valid_username):
-#     response = mock_application.get(url=valid_user_by_username_url)
-#     olta_user = UserCreate(**response.json())
-#
-#     assert olta_user. == valid_username
-#     assert response.status_code == 200
-
-def test_get_user_by_user_id(mock_application, valid_user_by_user_id_url, valid_user_id, valid_username, valid_user_email):
-    response = mock_application.get(url=valid_user_by_user_id_url)
+def test_get_user_by_username(mock_application, valid_user_by_username_url, valid_user_id, valid_username,
+                              valid_user_email):
+    response = mock_application.get(url=valid_user_by_username_url)
     selected_user = UserRead(**response.json())
 
     assert selected_user.user_id == valid_user_id
@@ -37,6 +31,16 @@ def test_get_user_by_user_id(mock_application, valid_user_by_user_id_url, valid_
     assert selected_user.email == valid_user_email
     assert response.status_code == 200
 
+
+def test_get_user_by_user_id(mock_application, valid_user_by_user_id_url, valid_user_id, valid_username,
+                             valid_user_email):
+    response = mock_application.get(url=valid_user_by_user_id_url)
+    selected_user = UserRead(**response.json())
+
+    assert selected_user.user_id == valid_user_id
+    assert selected_user.username == valid_username
+    assert selected_user.email == valid_user_email
+    assert response.status_code == 200
 
 # def test_user_can_be_deleted(mock_application, valid_delete_by_user_id, valid_user_by_user_id_url):
 #     response = mock_application.delete(url=valid_delete_by_user_id)
