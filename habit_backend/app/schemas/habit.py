@@ -1,12 +1,20 @@
-import datetime
 from typing import Optional
-from pydantic import BaseModel
+from sqlmodel import SQLModel, Field
 
 
-class Habit(BaseModel):
-    habit_id: Optional[int]
-    created_at: Optional[datetime.date]
-    user_id: int
+class HabitBase(SQLModel):
+    user_id: str = Field(index=True)
     task: str
-    description: str
     periodicity: int
+
+
+class Habit(HabitBase, table=True):
+    habit_id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class HabitCreate(HabitBase):
+    pass
+
+
+class HabitRead(HabitBase):
+    user_id: int

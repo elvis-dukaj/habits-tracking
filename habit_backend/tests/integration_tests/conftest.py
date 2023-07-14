@@ -49,11 +49,6 @@ def valid_username():
 
 
 @pytest.fixture
-def valid_user_email():
-    return "olta"
-
-
-@pytest.fixture
 def invalid_user_id():
     return 100000
 
@@ -64,13 +59,8 @@ def invalid_username():
 
 
 @pytest.fixture
-def valid_user(valid_user_id, valid_username, valid_user_email):
-    user = User(
-        user_id=valid_user_id,
-        username=valid_username,
-        email=valid_user_email
-    )
-    return user
+def valid_habit_id():
+    return 1
 
 
 @pytest.fixture
@@ -79,7 +69,17 @@ def user_url():
 
 
 @pytest.fixture
+def habit_url():
+    return "/habit"
+
+
+@pytest.fixture
 def valid_user_by_username_url(user_url, valid_username):
+    return f"{user_url}/get_by_username/{valid_username}"
+
+
+@pytest.fixture
+def valid_habit_by_user_id_url(user_url, valid_username):
     return f"{user_url}/get_by_username/{valid_username}"
 
 

@@ -4,8 +4,7 @@ from sqlmodel import SQLModel, Field
 
 
 class UserBase(SQLModel):
-    username: str = Field(index=True)
-    email: str
+    username: str
 
 
 class User(UserBase, table=True):
