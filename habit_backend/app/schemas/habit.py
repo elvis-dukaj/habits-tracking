@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Field
 
 
 class HabitBase(SQLModel):
-    user_id: str = Field(index=True)
+    user_id: int = Field(index=True, foreign_key="user.user_id")
     task: str
     periodicity: int
 
@@ -17,4 +17,4 @@ class HabitCreate(HabitBase):
 
 
 class HabitRead(HabitBase):
-    user_id: int
+    habit_id: int

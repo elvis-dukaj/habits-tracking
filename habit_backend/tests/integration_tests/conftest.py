@@ -19,7 +19,7 @@ def mock_configuration() -> Type[Config]:
 
 @pytest.fixture(scope="session")
 def mock_database(mock_configuration):
-    engine = create_engine(mock_configuration.db_host, echo=True)
+    engine = create_engine(mock_configuration.db_host)
 
     # clear all the tables and regenerate them
     SQLModel.metadata.drop_all(engine)
@@ -59,27 +59,12 @@ def invalid_username():
 
 
 @pytest.fixture
-def valid_habit_id():
-    return 1
-
-
-@pytest.fixture
 def user_url():
     return "/user"
 
 
 @pytest.fixture
-def habit_url():
-    return "/habit"
-
-
-@pytest.fixture
 def valid_user_by_username_url(user_url, valid_username):
-    return f"{user_url}/get_by_username/{valid_username}"
-
-
-@pytest.fixture
-def valid_habit_by_user_id_url(user_url, valid_username):
     return f"{user_url}/get_by_username/{valid_username}"
 
 
@@ -101,3 +86,33 @@ def invalid_user_by_user_id_url(user_url, invalid_user_id):
 @pytest.fixture
 def invalid_user_by_username_url(user_url, invalid_username):
     return f"{user_url}/get_by_username/{invalid_username}"
+
+
+@pytest.fixture
+def valid_habit_id():
+    return 1
+
+
+@pytest.fixture
+def valid_periodicity():
+    return 3
+
+
+@pytest.fixture
+def habit_url():
+    return "/habit"
+
+
+@pytest.fixture
+def valid_habit_by_id_url(habit_url, valid_habit_id):
+    return f"{habit_url}/{valid_habit_id}"
+
+
+@pytest.fixture
+def valid_habit_by_user_id_url(habit_url, valid_user_id):
+    return f"{habit_url}/?user_id={valid_user_id}"
+
+
+@pytest.fixture
+def valid_habit_by_periodicity_url(habit_url, valid_periodicity):
+    return f"{habit_url}/by_periodicity/{valid_periodicity}"

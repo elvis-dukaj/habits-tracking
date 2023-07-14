@@ -29,16 +29,20 @@ class HabitsTrackingService:
     def delete_habit(self, habit_id: int) -> None:
         self._db.delete_habit(habit_id)
 
-    def get_habit_by_id(self, habit_id: int, offset: int, limit: int) -> HabitRead:
-        habit = self._db.get_habit_by_id(habit_id, offset, limit)
+    def get_habit_by_id(self, habit_id) -> HabitRead:
+        habit = self._db.get_habit_by_id(habit_id)
         return habit
 
-    def get_all_habits(self) -> list[HabitRead]:
-        habits = self._db.get_all_habits()
+    def get_habits(self, offset: int, limit: int) -> list[HabitRead]:
+        habits = self._db.get_habits(offset, limit)
         return habits
 
-    def get_habits_by_user_id(self, user_id: int) -> list[HabitRead]:
-        reply = self._db.get_habits_by_user_id(user_id)
+    def get_habits_by_user_id(self, user_id: int, offset: int, limit: int) -> list[HabitRead]:
+        reply = self._db.get_habits_by_user_id(user_id, offset, limit)
+        return reply
+
+    def get_habits_by_periodicity(self, periodicity: int, offset: int, limit: int) -> list[HabitRead]:
+        reply = self._db.get_habits_by_periodicity(periodicity, offset, limit)
         return reply
     #
     # def mark_habit_completed(self, user_id: int, habit_id: int) -> HabitEvent:

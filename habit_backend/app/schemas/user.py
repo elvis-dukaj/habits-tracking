@@ -17,4 +17,3 @@ class UserCreate(UserBase):
 
 class UserRead(UserBase):
     user_id: int
-

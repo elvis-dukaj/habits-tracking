@@ -58,7 +58,7 @@ class DatabaseClient:
             session.delete(habit_to_delete)
             session.commit()
 
-    def get_habit_by_id(self, habit_id: int):
+    def get_habit_by_id(self, habit_id):
         with Session(self.engine) as session:
             habit = session.get(Habit, habit_id)
 
@@ -67,15 +67,21 @@ class DatabaseClient:
 
             return habit
 
-    def get_all_habits(self):
+    def get_habits(self, offset: int, limit: int):
         with Session(self.engine) as session:
-            statement = select(Habit)
+            statement = select(Habit).offset(offset).limit(limit)
             result = session.exec(statement)
             return result.all()
 
     def get_habits_by_user_id(self, user_id: int, offset: int, limit: int):
         with Session(self.engine) as session:
             statement = select(Habit).where(Habit.user_id == user_id).offset(offset).limit(limit)
+            result = session.exec(statement)
+            return result.all()
+
+    def get_habits_by_periodicity(self, periodicity: int, offset: int, limit: int):
+        with Session(self.engine) as session:
+            statement = select(Habit).where(Habit.periodicity == periodicity).offset(offset).limit(limit)
             result = session.exec(statement)
             return result.all()
 
