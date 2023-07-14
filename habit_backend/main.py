@@ -26,8 +26,8 @@ def reset_database(engine) -> None:
 
 
 def create_service(db_client: DatabaseClient) -> HabitsTrackingService:
-    habit_service = HabitsTrackingService(db_client)
-    return habit_service
+    service = HabitsTrackingService(db_client)
+    return service
 
 
 def create_app(service: HabitsTrackingService):
@@ -41,11 +41,6 @@ def create_app(service: HabitsTrackingService):
     fast_api.include_router(habit_routers)
     fast_api.include_router(habit_event_router)
     add_exception_handler(service=fast_api)
-
-    @fast_api.on_event("startup")
-    def on_startup():
-        pass
-        # reset_database(engine=habit_db_engine)
 
     return fast_api
 
