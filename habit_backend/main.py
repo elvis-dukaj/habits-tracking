@@ -1,5 +1,4 @@
-import sqlite3
-
+from sqlmodel import create_engine, SQLModel
 from fastapi import FastAPI
 
 from app.service.habit_tracker import HabitsTrackingService
@@ -11,9 +10,19 @@ from app.db.client import DatabaseClient
 from app.config import Config
 
 
-def create_database(config: Config) -> DatabaseClient:
-    database = DatabaseClient(config.db_host)
+def create_habit_db_engine(config: Config):
+    connect_args = {"check_same_thread": False}
+    return create_engine(config.db_host, echo=True, connect_args=connect_args)
+
+
+def create_database(engine) -> DatabaseClient:
+    database = DatabaseClient(engine)
     return database
+
+
+def reset_database(engine) -> None:
+    SQLModel.metadata.drop_all()
+    SQLModel.metadata.create_all()
 
 
 def create_service(db_client: DatabaseClient) -> HabitsTrackingService:
@@ -33,10 +42,16 @@ def create_app(service: HabitsTrackingService):
     fast_api.include_router(habit_event_router)
     add_exception_handler(service=fast_api)
 
-    # create_tables()
+    @fast_api.on_event("startup")
+    def on_startup():
+        pass
+        # reset_database(engine=habit_db_engine)
 
     return fast_api
 
 
-conf = Config()
-service = create_service(conf)
+habit_conf = Config()
+habit_db_engine = create_habit_db_engine(habit_conf)
+habit_db = create_database(habit_db_engine)
+habit_service = create_service(habit_db)
+app = create_app(habit_service)
