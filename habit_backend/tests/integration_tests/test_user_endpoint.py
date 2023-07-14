@@ -3,16 +3,21 @@ import pytest
 from app.schemas.user import UserRead, UserCreate
 
 
-def test_user_create_success(mock_application, user_url, valid_user_request_json):
-    response = mock_application.post(url=user_url, json=valid_user_request_json)
+def test_user_create_success(mock_application, user_url, valid_user_id, valid_username, valid_user_email):
+    json_body = {
+        "username": valid_username,
+        "email": valid_user_email
+    }
+    response = mock_application.post(url=user_url, json=json_body)
 
     body = response.json()
     assert body is not None
 
     created_user = UserRead(**response.json())
 
-    # assert created_user.user_id == valid_user_request.user_id
-    assert created_user.user_id is not None
+    assert created_user.user_id == valid_user_id
+    assert created_user.username == json_body["username"]
+    assert created_user.email == json_body["email"]
     assert response.status_code == 201
 
 
