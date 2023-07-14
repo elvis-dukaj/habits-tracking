@@ -1,29 +1,31 @@
 from typing import Type
 import pytest
 
+from sqlmodel import create_engine, SQLModel
 from fastapi.testclient import TestClient
 
 from main import create_service, create_app
 from app.config import Config
 from app.schemas.user import User
 from app.db.client import DatabaseClient
-from models.create_tables import create_tables, drop_tables
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def mock_configuration() -> Type[Config]:
     config = Config
-    config.db_host = ":memory:"
+    config.db_host = "sqlite:///habits_test.db"
     return config
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def mock_database(mock_configuration):
-    database = DatabaseClient(mock_configuration.db_host)
-    cur = database._cursor
+    engine = create_engine(mock_configuration.db_host, echo=True)
 
-    drop_tables(cur)
-    create_tables(cur)
+    # clear all the tables and regenerate them
+    SQLModel.metadata.drop_all(engine)
+    SQLModel.metadata.create_all(engine)
+
+    database = DatabaseClient(engine)
 
     return database
 
@@ -69,6 +71,26 @@ def valid_user(valid_user_id, valid_username, valid_user_email):
         email=valid_user_email
     )
     return user
+
+
+@pytest.fixture
+def valid_user_request_json(valid_username, valid_user_email):
+    user = {
+        "user_id": None,
+        "username": valid_username,
+        "email": valid_user_email
+    }
+    return user
+
+
+# @pytest.fixture
+# def valid_user_request_(valid_user_id, valid_username, valid_user_email):
+#     user = User(
+#         user_id=valid_user_id,
+#         username=valid_username,
+#         email=valid_user_email
+#     )
+#     return user
 
 
 @pytest.fixture
