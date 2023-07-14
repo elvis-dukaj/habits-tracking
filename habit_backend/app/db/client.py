@@ -26,6 +26,10 @@ class DatabaseClient:
     def get_user_by_id(self, user_id: int) -> UserRead:
         with Session(self.engine) as session:
             user = session.get(User, user_id)
+
+            if user is None:
+                raise UserNotFoundError()
+
             return user
 
     def get_user_by_username(self, username: str) -> UserRead:

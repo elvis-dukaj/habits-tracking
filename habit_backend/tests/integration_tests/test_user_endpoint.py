@@ -47,13 +47,17 @@ def test_user_can_be_deleted(mock_application, valid_delete_by_user_id, valid_us
     response = mock_application.delete(url=valid_delete_by_user_id)
     assert response.status_code == 200
 
-#
-#
-# def test_get_invalid_username_returns_error(mock_application, invalid_user_by_username_url):
-#     response = mock_application.get(url=invalid_user_by_username_url)
-#     assert response.status_code == 404
-#
-#
-# def test_get_delete_invalid_user_is_handled(mock_application, invalid_user_by_user_id_url):
-#     response = mock_application.get(url=invalid_user_by_user_id_url)
-#     assert response.status_code == 404
+
+def test_get_user_by_deleted_user_id(mock_application, valid_user_by_user_id_url, valid_user_id):
+    response = mock_application.get(url=valid_user_by_user_id_url)
+    assert response.status_code == 404
+
+
+def test_get_invalid_username_returns_error(mock_application, invalid_user_by_username_url):
+    response = mock_application.get(url=invalid_user_by_username_url)
+    assert response.status_code == 404
+
+
+def test_get_delete_invalid_user_is_handled(mock_application, invalid_user_by_user_id_url):
+    response = mock_application.get(url=invalid_user_by_user_id_url)
+    assert response.status_code == 404

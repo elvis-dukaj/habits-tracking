@@ -1,5 +1,6 @@
 class UserNotFoundError(Exception):
-   pass
+    pass
+
 
 class HabitNotFoundError(Exception):
-   pass
+    pass
