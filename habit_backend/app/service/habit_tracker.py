@@ -13,10 +13,10 @@ class HabitsTrackingService:
     # def delete_user(self, user_id: int) -> None:
     #     self._db.delete_user(user_id)
     #
-    # def get_user_by_id(self, user_id: int) -> UserRequest:
-    #     user = self._db.get_user_by_id(user_id)
-    #     return user
-    #
+    def get_user_by_id(self, user_id: int) -> UserRead:
+        user = self._db.get_user_by_id(user_id)
+        return user
+
     # def get_user_by_username(self, username: str) -> User:
     #     user = self._db.get_user_by_username(username)
     #     return user

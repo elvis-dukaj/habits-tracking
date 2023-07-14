@@ -23,23 +23,27 @@ class DatabaseClient:
     #
     #     self._cursor.execute(sql_command, sql_args)
     #     self._connection.commit()
-    #
-    # def get_user_by_id(self, user_id: int) -> User:
-    #     sql_command = """
-    #     SELECT * FROM user_account
-    #     WHERE user_id = ?
-    #     """
-    #     sql_args = (user_id,)
-    #
-    #     self._cursor.execute(sql_command, sql_args)
-    #     row = self._cursor.fetchone()
-    #
-    #     if row is None:
-    #         raise UserNotFoundError()
-    #
-    #     user = User(**row)
-    #     return user
-    #
+
+    def get_user_by_id(self, user_id: int) -> UserRead:
+        with Session(self.engine) as session:
+            user = session.get(User, user_id)
+            return user
+
+        # sql_command = """
+        # SELECT * FROM user_account
+        # WHERE user_id = ?
+        # """
+        # sql_args = (user_id,)
+        #
+        # self._cursor.execute(sql_command, sql_args)
+        # row = self._cursor.fetchone()
+        #
+        # if row is None:
+        #     raise UserNotFoundError()
+        #
+        # user = User(**row)
+        # return user
+
     # def get_user_by_username(self, username: str) -> User:
     #     sql_command = """
     #     SELECT * FROM user_account
