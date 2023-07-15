@@ -1,7 +1,10 @@
+import datetime
+
 from sqlmodel import Session, select
 
 from app.schemas.user import UserCreate, UserRead, User
-from app.schemas.habit import HabitCreate, HabitRead, Habit
+from app.schemas.habit import HabitCreate, Habit
+from app.schemas.habit_event import HabitEventComplete, HabitEvent
 from app.exception import UserNotFoundError
 
 
@@ -85,14 +88,21 @@ class DatabaseClient:
             result = session.exec(statement)
             return result.all()
 
-    # def add_habit_event(self, user_id: int, habit_id: int) -> HabitEvent:
-    #     pass
-    #     # raw_event = self._habit_event_db[self._current_habit_event_id] = {
-    #     #     "event_id": self._current_habit_event_id,
-    #     #     "completed_at": datetime.date.today(),
-    #     #     "user_id": user_id,
-    #     #     "habit_id": habit_id
-    #     # }
-    #     # self._current_habit_event_id += 1
-    #     #
-    #     # return HabitEvent(**raw_event)
+    def add_habit_event(self, habit_event: HabitEventComplete):
+        with Session(self.engine) as session:
+            if habit_event.completed_at is None:
+                habit_event.completed_at = datetime.date.today()
+
+            created_habit = HabitEvent.from_orm(habit_event)
+
+            session.add(created_habit)
+            session.commit()
+
+    def get_habit_event_by_id(self, habit_event_id: int):
+        with Session(self.engine) as session:
+            habit_event = session.get(HabitEvent, habit_event_id)
+
+            if habit_event is None:
+                raise UserNotFoundError()
+
+            return habit_event

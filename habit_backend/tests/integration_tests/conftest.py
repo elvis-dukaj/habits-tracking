@@ -101,6 +101,11 @@ def valid_periodicity():
 
 
 @pytest.fixture
+def valid_habit_event_id():
+    return 1
+
+
+@pytest.fixture
 def habit_url():
     return "/habit"
 
@@ -118,3 +123,13 @@ def valid_habit_by_user_id_url(habit_url, valid_user_id):
 @pytest.fixture
 def valid_habit_by_periodicity_url(habit_url, valid_periodicity):
     return f"{habit_url}/by_periodicity/{valid_periodicity}"
+
+
+@pytest.fixture
+def habit_event_url():
+    return f"/habit_event"
+
+
+@pytest.fixture
+def habit_event_get_by_id_url(valid_habit_event_id):
+    return f"/habit_event/{valid_habit_event_id}"

@@ -1,5 +1,9 @@
+from typing import Optional
+import datetime
+
 from app.schemas.user import UserCreate, UserRead
 from app.schemas.habit import HabitCreate, HabitRead
+from app.schemas.habit_event import HabitEventComplete
 from app.db.client import DatabaseClient
 
 
@@ -44,7 +48,10 @@ class HabitsTrackingService:
     def get_habits_by_periodicity(self, periodicity: int, offset: int, limit: int) -> list[HabitRead]:
         reply = self._db.get_habits_by_periodicity(periodicity, offset, limit)
         return reply
-    #
-    # def mark_habit_completed(self, user_id: int, habit_id: int) -> HabitEvent:
-    #     event = self._db.add_habit_event(user_id, habit_id)
-    #     return event
+
+    def mark_habit_completed(self, habit_event: HabitEventComplete):
+        event = self._db.add_habit_event(habit_event)
+        return event
+
+    def get_habit_event_by_id(self, habit_event_id: int):
+        return self._db.get_habit_event_by_id(habit_event_id)

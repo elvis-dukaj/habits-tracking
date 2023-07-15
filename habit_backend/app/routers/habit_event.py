@@ -1,7 +1,11 @@
+import datetime
+from typing import Optional
+import datetime
+
 from fastapi import APIRouter
 
 from app.service.habit_tracker import HabitsTrackingService
-from app.schemas.habit_event import HabitEvent
+from app.schemas.habit_event import HabitEventComplete, HabitEventRead
 
 
 def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRouter:
@@ -10,9 +14,12 @@ def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRoute
         tags=["habit_event"]
     )
 
-    @routers.post("/complete/{user_id}/{habit_id}", response_model=HabitEvent, status_code=201)
-    def mark_habit_completed(user_id: int, habit_id: int):
-        reply = habit_service.mark_habit_completed(user_id, habit_id)
-        return reply
+    @routers.post("/", status_code=201)
+    def mark_habit_completed(habit_event: HabitEventComplete):
+        habit_service.mark_habit_completed(habit_event)
+
+    @routers.get("/{habit_event_id}", response_model=HabitEventRead)
+    def get_habit_event_by_id(habit_event_id: int):
+        return habit_service.get_habit_event_by_id(habit_event_id)
 
     return routers
