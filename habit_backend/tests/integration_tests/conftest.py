@@ -2,6 +2,7 @@ from typing import Type
 import pytest
 
 from sqlmodel import create_engine, SQLModel
+from sqlalchemy.pool import StaticPool
 from fastapi.testclient import TestClient
 
 from main import create_service, create_app
@@ -13,13 +14,14 @@ from app.db.client import DatabaseClient
 @pytest.fixture(scope="session")
 def mock_configuration() -> Type[Config]:
     config = Config
-    config.db_host = "sqlite:///habits_test.db"
+    config.db_host = "sqlite://"
     return config
 
 
 @pytest.fixture(scope="session")
 def mock_database(mock_configuration):
-    engine = create_engine(mock_configuration.db_host)
+    engine = create_engine(mock_configuration.db_host, echo=True, connect_args={'check_same_thread': False},
+                           poolclass=StaticPool)
 
     # clear all the tables and regenerate them
     SQLModel.metadata.drop_all(engine)
