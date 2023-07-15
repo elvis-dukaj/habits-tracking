@@ -54,7 +54,7 @@ class DatabaseClient:
 
     def delete_habit(self, habit_id):
         with Session(self.engine) as session:
-            habit_to_delete = self.get_user_by_id(habit_id)
+            habit_to_delete = self.get_habit_by_id(habit_id)
             session.delete(habit_to_delete)
             session.commit()
 

@@ -69,3 +69,14 @@ def test_get_habits_by_periodicity(mock_application, valid_habit_by_periodicity_
         assert habit.periodicity == valid_periodicity
 
     assert response.status_code == 200
+
+
+def test_can_delete_habits(mock_application, habit_url):
+    habit_ids: list[int] = [1, 2, 3, 4, 5]
+
+    for habit_id in habit_ids:
+        url = f"{habit_url}/{habit_id}"
+        print(f"url is {url}")
+        response = mock_application.delete(url=url)
+
+        assert response.status_code == 200
