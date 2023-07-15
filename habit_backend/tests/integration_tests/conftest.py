@@ -131,5 +131,10 @@ def habit_event_url():
 
 
 @pytest.fixture
-def habit_event_get_by_id_url(valid_habit_event_id):
-    return f"/habit_event/{valid_habit_event_id}"
+def habit_event_get_by_id_url(habit_event_url, valid_habit_event_id):
+    return f"{habit_event_url}/id/{valid_habit_event_id}"
+
+
+@pytest.fixture
+def habit_event_by_user_and_habit_id_url(habit_event_url, valid_user_id, valid_habit_id):
+    return f"{habit_event_url}/{valid_user_id}/{valid_habit_id}"
