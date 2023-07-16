@@ -14,7 +14,7 @@ from app.db.client import DatabaseClient
 @pytest.fixture(scope="session")
 def mock_configuration() -> Type[Config]:
     config = Config
-    config.db_host = "sqlite://"
+    config.db_host = "sqlite:///habit.db"
     return config
 
 
@@ -137,9 +137,9 @@ def habit_event_get_by_id_url(habit_event_url, valid_habit_event_id):
 
 @pytest.fixture
 def habit_event_by_user_url(habit_event_url, valid_user_id, valid_habit_id):
-    return f"{habit_event_url}/{valid_user_id}"
+    return f"{habit_event_url}/?user_id={valid_user_id}"
 
 
 @pytest.fixture
 def habit_event_by_user_and_habit_id_url(habit_event_url, valid_user_id, valid_habit_id):
-    return f"{habit_event_url}/{valid_user_id}/{valid_habit_id}"
+    return f"{habit_event_url}/?user_id={valid_user_id}&habit_id={valid_habit_id}"
