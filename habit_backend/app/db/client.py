@@ -107,6 +107,15 @@ class DatabaseClient:
 
             return habit_event
 
+    def get_habit_event_by_user_id(self, user_id: int, offset: int, limit: int):
+        with Session(self.engine) as session:
+            result = session.exec(
+                select(HabitEvent)
+                .where(HabitEvent.user_id == user_id)
+                .offset(offset).limit(limit)
+            )
+            return result.all()
+
     def get_habit_event_by_user_and_habit(self, user_id: int, habit_id: int, offset: int, limit: int):
         with Session(self.engine) as session:
             result = session.exec(

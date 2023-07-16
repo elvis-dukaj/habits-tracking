@@ -20,8 +20,19 @@ def test_get_habit_event_by_id(mock_application, habit_event_get_by_id_url, vali
     assert response.status_code == 200
 
 
-def test_get_habit_event_by_user_id_and_habit_event(mock_application, habit_event_by_user_and_habit_id_url,
-                                                    valid_user_id, valid_habit_id):
+def test_get_habit_event_by_user_id(mock_application, habit_event_by_user_url,
+                                    valid_user_id):
+    response = mock_application.get(url=habit_event_by_user_url)
+
+    for json_body in response.json():
+        habit_event = HabitEventRead(**json_body)
+
+        assert habit_event.user_id == valid_user_id
+        assert response.status_code == 200
+
+
+def test_get_habit_event_by_user_and_habit(mock_application, habit_event_by_user_and_habit_id_url,
+                                           valid_user_id, valid_habit_id):
     response = mock_application.get(url=habit_event_by_user_and_habit_id_url)
 
     for json_body in response.json():

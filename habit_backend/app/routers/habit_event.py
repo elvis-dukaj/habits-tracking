@@ -18,6 +18,11 @@ def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRoute
     def get_habit_event_by_id(habit_event_id: int):
         return habit_service.get_habit_event_by_id(habit_event_id)
 
+    @routers.get("/{user_id}", response_model=list[HabitEventRead])
+    def get_habit_event_by_user_id(user_id: int, offset: int = 0,
+                                   limit: int = Query(default=100, lte=100)):
+        return habit_service.get_habits_by_user_id(user_id, offset, limit)
+
     @routers.get("/{user_id}/{habit_id}", response_model=list[HabitEventRead])
     def get_habit_event_by_user_and_habit(user_id: int, habit_id: int, offset: int = 0,
                                           limit: int = Query(default=100, lte=100)):

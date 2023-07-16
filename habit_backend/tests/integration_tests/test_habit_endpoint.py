@@ -47,8 +47,8 @@ def test_habit_create_success(mock_application, habit_url, valid_user_id):
         assert response.status_code == 201
 
 
-def test_get_habits_by_habit_id(mock_application, valid_habit_by_id_url, valid_habit_id):
-    response = mock_application.get(url=valid_habit_by_id_url)
+def test_get_habits_by_habit_id(mock_application, habit_by_id_url, valid_habit_id):
+    response = mock_application.get(url=habit_by_id_url)
 
     json_body = response.json()
     assert json_body is not None
@@ -59,8 +59,8 @@ def test_get_habits_by_habit_id(mock_application, valid_habit_by_id_url, valid_h
     assert response.status_code == 200
 
 
-def test_get_habits_by_periodicity(mock_application, valid_habit_by_periodicity_url, valid_periodicity):
-    response = mock_application.get(url=valid_habit_by_periodicity_url)
+def test_get_habits_by_periodicity(mock_application, habit_by_periodicity_url, valid_periodicity):
+    response = mock_application.get(url=habit_by_periodicity_url)
 
     json_body_list = response.json()
 
@@ -76,7 +76,6 @@ def test_can_delete_habits(mock_application, habit_url):
 
     for habit_id in habit_ids:
         url = f"{habit_url}/{habit_id}"
-        print(f"url is {url}")
         response = mock_application.delete(url=url)
 
         assert response.status_code == 200

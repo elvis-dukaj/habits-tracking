@@ -20,7 +20,7 @@ def mock_configuration() -> Type[Config]:
 
 @pytest.fixture(scope="session")
 def mock_database(mock_configuration):
-    engine = create_engine(mock_configuration.db_host, echo=True, connect_args={'check_same_thread': False},
+    engine = create_engine(mock_configuration.db_host, echo=False, connect_args={'check_same_thread': False},
                            poolclass=StaticPool)
 
     # clear all the tables and regenerate them
@@ -111,7 +111,7 @@ def habit_url():
 
 
 @pytest.fixture
-def valid_habit_by_id_url(habit_url, valid_habit_id):
+def habit_by_id_url(habit_url, valid_habit_id):
     return f"{habit_url}/{valid_habit_id}"
 
 
@@ -121,7 +121,7 @@ def valid_habit_by_user_id_url(habit_url, valid_user_id):
 
 
 @pytest.fixture
-def valid_habit_by_periodicity_url(habit_url, valid_periodicity):
+def habit_by_periodicity_url(habit_url, valid_periodicity):
     return f"{habit_url}/by_periodicity/{valid_periodicity}"
 
 
@@ -133,6 +133,11 @@ def habit_event_url():
 @pytest.fixture
 def habit_event_get_by_id_url(habit_event_url, valid_habit_event_id):
     return f"{habit_event_url}/id/{valid_habit_event_id}"
+
+
+@pytest.fixture
+def habit_event_by_user_url(habit_event_url, valid_user_id, valid_habit_id):
+    return f"{habit_event_url}/{valid_user_id}"
 
 
 @pytest.fixture
