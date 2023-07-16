@@ -1,5 +1,4 @@
 import datetime
-
 from sqlmodel import Session, select
 
 from app.schemas.user import UserCreate, UserRead, User
@@ -12,7 +11,7 @@ class DatabaseClient:
     def __init__(self, engine):
         self.engine = engine
 
-    def add_user(self, user: UserCreate) -> UserRead:
+    def add_user(self, user: UserCreate):
         created_user = user
         with Session(self.engine) as session:
             db_hero = User.from_orm(user)
@@ -82,10 +81,15 @@ class DatabaseClient:
             result = session.exec(statement)
             return result.all()
 
-    def get_habits_by_periodicity(self, periodicity: int, offset: int, limit: int):
+    def get_habits_by_user_and_periodicity(self, user_id: int, periodicity: int, offset: int, limit: int):
         with Session(self.engine) as session:
-            statement = select(Habit).where(Habit.periodicity == periodicity).offset(offset).limit(limit)
-            result = session.exec(statement)
+            result = session.exec(
+                select(Habit)
+                .where(Habit.user_id == user_id)
+                .where(Habit.periodicity == periodicity)
+                .offset(offset)
+                .limit(limit)
+            )
             return result.all()
 
     def add_habit_event(self, habit_event: HabitEventComplete):

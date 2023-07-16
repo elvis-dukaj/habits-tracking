@@ -121,8 +121,8 @@ def valid_habit_by_user_id_url(habit_url, valid_user_id):
 
 
 @pytest.fixture
-def habit_by_periodicity_url(habit_url, valid_periodicity):
-    return f"{habit_url}/by_periodicity/{valid_periodicity}"
+def habit_by_periodicity_url(habit_url, valid_user_id, valid_periodicity):
+    return f"{habit_url}/?user_id={valid_user_id}&periodicity={valid_periodicity}"
 
 
 @pytest.fixture

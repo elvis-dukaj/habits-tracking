@@ -45,8 +45,8 @@ class HabitsTrackingService:
         reply = self._db.get_habits_by_user_id(user_id, offset, limit)
         return reply
 
-    def get_habits_by_periodicity(self, periodicity: int, offset: int, limit: int) -> list[HabitRead]:
-        reply = self._db.get_habits_by_periodicity(periodicity, offset, limit)
+    def get_habits_by_user_and_periodicity(self, user_id: int, periodicity: int, offset: int, limit: int):
+        reply = self._db.get_habits_by_user_and_periodicity(user_id, periodicity, offset, limit)
         return reply
 
     def mark_habit_completed(self, habit_event: HabitEventComplete):
