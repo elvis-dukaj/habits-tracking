@@ -94,12 +94,15 @@ class DatabaseClient:
 
     def add_habit_event(self, habit_event: HabitEventComplete):
         with Session(self.engine) as session:
-            if habit_event.completed_at is None:
-                habit_event.completed_at = datetime.date.today()
-
             created_habit = HabitEvent.from_orm(habit_event)
 
             session.add(created_habit)
+            session.commit()
+
+    def delete_habit_event(self, habit_event_id: int):
+        with Session(self.engine) as session:
+            habit_to_delete = self.get_habit_event_by_id(habit_event_id)
+            session.delete(habit_to_delete)
             session.commit()
 
     def get_habit_event_by_id(self, habit_event_id: int):

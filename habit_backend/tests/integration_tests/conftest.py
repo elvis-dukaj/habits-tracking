@@ -96,6 +96,12 @@ def valid_habit_id():
 
 
 @pytest.fixture
+def valid_habit_event_date():
+    return "2023-07-17"
+
+
+
+@pytest.fixture
 def valid_periodicity():
     return 3
 

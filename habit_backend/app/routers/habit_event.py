@@ -23,8 +23,12 @@ def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRoute
     def get_habit_event_by_user_and_habit(user_id: int, habit_id: Optional[int] = None, offset: int = 0,
                                           limit: int = Query(default=100, lte=100)):
         if habit_id is None:
-            return habit_service.get_habits_by_user_id(user_id, offset, limit)
-        else:
-            return habit_service.get_habit_event_by_user_and_habit(user_id, habit_id, offset, limit)
+            return habit_service.get_habit_event_by_user_id(user_id, offset, limit)
+
+        return habit_service.get_habit_event_by_user_and_habit(user_id, habit_id, offset, limit)
+
+    @routers.delete("/{habit_event_id}", status_code=201)
+    def delete_habit_event(habit_event_id: int):
+        habit_service.delete_habit_event(habit_event_id)
 
     return routers

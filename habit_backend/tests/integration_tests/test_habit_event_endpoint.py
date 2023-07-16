@@ -1,10 +1,12 @@
 from app.schemas.habit_event import HabitEventRead
 
 
-def test_habit_event_is_marked_as_completed(mock_application, habit_event_url, valid_user_id, valid_habit_id):
+def test_habit_event_is_marked_as_completed(mock_application, habit_event_url, valid_user_id, valid_habit_id,
+                                            valid_habit_event_date):
     body = {
         "user_id": valid_user_id,
-        "habit_id": valid_habit_id
+        "habit_id": valid_habit_id,
+        "completed_at": valid_habit_event_date
     }
 
     response = mock_application.post(url=habit_event_url, json=body)
@@ -20,8 +22,7 @@ def test_get_habit_event_by_id(mock_application, habit_event_get_by_id_url, vali
     assert response.status_code == 200
 
 
-def test_get_habit_event_by_user_id(mock_application, habit_event_by_user_url,
-                                    valid_user_id):
+def test_get_habit_event_by_user_id(mock_application, habit_event_by_user_url, valid_user_id):
     response = mock_application.get(url=habit_event_by_user_url)
 
     for json_body in response.json():

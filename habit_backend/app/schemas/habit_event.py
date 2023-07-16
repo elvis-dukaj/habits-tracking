@@ -6,7 +6,7 @@ from sqlmodel import SQLModel, Field
 class HabitEventBase(SQLModel):
     user_id: int = Field(foreign_key="user.user_id")
     habit_id: int = Field(foreign_key="habit.habit_id")
-    completed_at: Optional[datetime.date]  # = Field(default_factory=datetime.date.today)
+    completed_at: datetime.date  # = Field(default_factory=datetime.datetime.utcnow)
 
 
 class HabitEvent(HabitEventBase, table=True):

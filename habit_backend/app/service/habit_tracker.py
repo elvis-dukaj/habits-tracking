@@ -53,11 +53,14 @@ class HabitsTrackingService:
         event = self._db.add_habit_event(habit_event)
         return event
 
+    def delete_habit_event(self, habit_event_id: int):
+        return self._db.delete_habit_event(habit_event_id)
+
     def get_habit_event_by_id(self, habit_event_id: int):
         return self._db.get_habit_event_by_id(habit_event_id)
 
     def get_habit_event_by_user_id(self, user_id: int, offset: int, limit: int):
-        return self._db.get_habit_event_by_user_and_habit(user_id, offset, limit)
+        return self._db.get_habit_event_by_user_id(user_id, offset, limit)
 
     def get_habit_event_by_user_and_habit(self, user_id: int, habit_id: int, offset: int, limit: int):
         return self._db.get_habit_event_by_user_and_habit(user_id, habit_id, offset, limit)
