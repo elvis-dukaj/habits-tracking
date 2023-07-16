@@ -1,6 +1,5 @@
-import pytest
 
-from app.schemas.habit import HabitCreate, HabitRead
+from app.schemas.habit import HabitRead
 
 
 def test_habit_create_success(mock_application, habit_url, valid_user_id):
@@ -56,6 +55,7 @@ def test_get_habits_by_habit_id(mock_application, habit_by_id_url, valid_habit_i
     habit = HabitRead(**json_body)
 
     assert habit.user_id == 1
+    assert habit.habit_id == valid_habit_id
     assert response.status_code == 200
 
 

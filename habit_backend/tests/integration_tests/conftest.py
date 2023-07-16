@@ -67,12 +67,12 @@ def user_url():
 
 @pytest.fixture
 def valid_user_by_username_url(user_url, valid_username):
-    return f"{user_url}/get_by_username/{valid_username}"
+    return f"{user_url}/username/{valid_username}"
 
 
 @pytest.fixture
 def valid_user_by_user_id_url(user_url, valid_user_id):
-    return f"{user_url}/get_by_id/{valid_user_id}"
+    return f"{user_url}/id/{valid_user_id}"
 
 
 @pytest.fixture
