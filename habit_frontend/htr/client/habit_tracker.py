@@ -108,8 +108,13 @@ class HabitTrackerClient:
 
         return habits
 
-    def list_habits_by_periodicity(self, periodicity: int) -> list[Habit]:
-        url = f"{self.habit_prefix}/?user_id={self._current_user_id}&periodicity={periodicity}&offset=0&limit=100"
+    def list_habits(self, periodicity: Optional[int] = None) -> list[Habit]:
+        url = f"{self.habit_prefix}/?user_id={self._current_user_id}&offset=0&limit=100"
+
+        if periodicity is not None:
+            url = f"{url}&periodicity={periodicity}&offset=0&limit=100"
+
+        print(f"url is {url}")
         response = requests.get(url)
 
         if response.status_code != 200:

@@ -1,6 +1,6 @@
 import datetime
-
 import click
+from typing import Optional
 
 from htr.client.habit_tracker import HabitTrackerClient, Habit
 
@@ -13,10 +13,10 @@ def habit(habit_tracker_client: HabitTrackerClient, user_id: int):
 
 
 @habit.command()
-@click.option("--with-periodicity", "periodicity", type=click.INT, help="filter by periodicity")
+@click.option("--with-periodicity", "periodicity", required=False, type=click.INT, help="filter by periodicity")
 @click.pass_obj
-def list(habit_tracker_client: HabitTrackerClient, periodicity: int):
-    habits: list[Habit] = habit_tracker_client.list_habits_by_periodicity(periodicity)
+def list(habit_tracker_client: HabitTrackerClient, periodicity: Optional[int] = None):
+    habits: list[Habit] = habit_tracker_client.list_habits(periodicity)
     if len(habits) == 0:
         click.echo("No habits found")
         return
