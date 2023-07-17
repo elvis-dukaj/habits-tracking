@@ -2,20 +2,21 @@ import datetime
 import click
 from typing import Optional
 
+from htr.cli.cli import cli
 from htr.client.habit_tracker import HabitTrackerClient, Habit
 
 
-@click.group()
-@click.option("--user-id", "user_id", envvar="HABIT_TRACKER_USER_ID", type=click.INT, help="user")
+@cli.group()
+@click.option("--user-id", "user_id", envvar="HABIT_TRACKER_USER_ID", type=click.INT, help="user", required=True)
 @click.pass_obj
 def habit(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.set_current_user_id(user_id)
 
 
-@habit.command()
+@habit.command("list")
 @click.option("--with-periodicity", "periodicity", required=False, type=click.INT, help="filter by periodicity")
 @click.pass_obj
-def list(habit_tracker_client: HabitTrackerClient, periodicity: Optional[int] = None):
+def list_habits(habit_tracker_client: HabitTrackerClient, periodicity: Optional[int] = None):
     habits: list[Habit] = habit_tracker_client.list_habits(periodicity)
     if len(habits) == 0:
         click.echo("No habits found")

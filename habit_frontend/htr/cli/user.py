@@ -1,9 +1,10 @@
 import click
 
+from htr.cli.cli import cli
 from htr.client.habit_tracker import HabitTrackerClient
 
 
-@click.group()
+@cli.group("user")
 @click.pass_obj
 def user(habit_tracker_client: HabitTrackerClient):
     pass

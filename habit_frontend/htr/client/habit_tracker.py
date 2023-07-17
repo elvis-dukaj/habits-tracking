@@ -152,8 +152,6 @@ class HabitTrackerClient:
         if habit_id is not None:
             url = url + f"&habit_id={habit_id}"
 
-        print(f"url is {url}")
-
         response = requests.get(url)
 
         if response.status_code != 200:

@@ -1,5 +1,4 @@
-from htr.cli import cli
-from config import Config
+from cli.cli import cli
 
-if __name__ == 'main':
+if __name__ == '__main__':
     cli()
