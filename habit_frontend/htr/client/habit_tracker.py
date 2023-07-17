@@ -1,5 +1,6 @@
 import requests
 import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -8,6 +9,12 @@ class Habit(BaseModel):
     habit_id: int
     task: str
     periodicity: int
+
+
+class HabitEvent(BaseModel):
+    user_id: int
+    habit_id: int
+    completed_at: datetime.date
 
 
 class HabitTrackerClient:
@@ -106,3 +113,24 @@ class HabitTrackerClient:
         json_reply = response.json()
 
         habits: list[Habit] = []
+
+    def list_habit_events(self, habit_id: Optional[int]) -> list[HabitEvent]:
+        url = f"{self.habit_event_prefix}/?user_id={self._current_user_id}&offset=0&limit=100"
+
+        if habit_id is not None:
+            url = url + f"&habit_id={habit_id}"
+
+        print(f"url is {url}")
+
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            raise Exception("an error")
+
+        json_reply = response.json()
+        habit_events: list[HabitEvent] = []
+
+        for habit_event_json in json_reply:
+            habit_events.append(HabitEvent(**habit_event_json))
+
+        return habit_events

@@ -17,4 +17,4 @@ def cli(ctx, endpoint: str):
 
 cli.add_command(user)
 cli.add_command(habit)
-# cli.add_command(streak)
+cli.add_command(streak)
