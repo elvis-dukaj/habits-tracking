@@ -1,3 +1,5 @@
+import datetime
+
 import click
 
 from htr.client.habit_tracker import HabitTrackerClient, Habit
@@ -21,16 +23,15 @@ def list(habit_tracker_client: HabitTrackerClient, periodicity: int):
         return
 
     click.echo(f"Found {len(habits)} habits: \n")
-    for habit in habits:
-        click.echo(f" habit[{habit.habit_id}] ")
-        click.echo(f"  user_id: {habit.user_id}")
-        click.echo(f"  task: '{habit.task}'")
-        click.echo(f"  periodicity: {habit.periodicity}\n")
+    for habit_response in habits:
+        click.echo(f" habit[{habit_response.habit_id}] ")
+        click.echo(f"  user_id: {habit_response.user_id}")
+        click.echo(f"  task: '{habit_response.task}'")
+        click.echo(f"  periodicity: {habit_response.periodicity}\n")
 
 
 @habit.command()
 @click.option("--task", prompt=True, help="short description of the task")
-@click.option("--description", prompt=True, help="short description of the task")
 @click.option("--periodicity", prompt=True, type=click.INT, help="periodicity in days")
 @click.pass_obj
 def create(habit_tracker_client: HabitTrackerClient, task: str, description: str, periodicity: int):
@@ -46,6 +47,9 @@ def delete(habit_tracker_client: HabitTrackerClient, habit_id: int):
 
 @habit.command()
 @click.option("--habit-id", required=True, type=click.INT, help="habit id to remove")
+@click.option("--completed-date", "completed_date", required=True, type=click.DateTime(),
+              help="habit id to remove")
 @click.pass_obj
-def complete(habit_tracker_client: HabitTrackerClient, habit_id: int):
-    click.echo(f"complete new habit {habit_id}")
+def complete(habit_tracker_client: HabitTrackerClient, habit_id: int, completed_date: datetime.datetime):
+    habit_tracker_client.mark_habit_completed(habit_id, completed_date.date())
+    click.echo(f"habit {habit_id} was marked as completed")

@@ -1,4 +1,5 @@
 import requests
+import datetime
 from pydantic import BaseModel
 
 
@@ -14,6 +15,7 @@ class HabitTrackerClient:
         self.endpoint: str = endpoint
         self.user_prefix: str = f"{self.endpoint}/user"
         self.habit_prefix: str = f"{self.endpoint}/habit"
+        self.habit_event_prefix: str = f"{self.endpoint}/habit_event"
         self._current_user_id: int = 0
 
     def set_current_user_id(self, user_id: int):
@@ -66,3 +68,19 @@ class HabitTrackerClient:
             habits.append(habit)
 
         return habits
+
+    def mark_habit_completed(self, habit_id: int, completed_at: datetime.date):
+        json_body = {
+            "user_id": self._current_user_id,
+            "habit_id": habit_id,
+            "completed_at": str(completed_at)
+        }
+        print(f"I want to send ti {self.habit_event_prefix} this: {json_body}")
+        response = requests.post(url=self.habit_event_prefix, json=json_body)
+
+        if response.status_code != 201:
+            raise Exception("an error")
+
+        json_reply = response.json()
+
+        habits: list[Habit] = []
