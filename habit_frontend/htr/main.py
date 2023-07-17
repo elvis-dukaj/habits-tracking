@@ -1,4 +1,5 @@
-from htr import cli
+from htr.cli import cli
+from config import Config
 
 if __name__ == 'main':
-    cli("localhost:8000")
+    cli()

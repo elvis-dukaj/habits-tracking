@@ -14,7 +14,7 @@ from app.db.client import DatabaseClient
 @pytest.fixture(scope="session")
 def mock_configuration() -> Type[Config]:
     config = Config
-    config.db_host = "sqlite:///habit.db"
+    config.db_host = "sqlite:///"
     return config
 
 

@@ -13,7 +13,7 @@ authors = [
 description = "Command line interface for habit tracker"
 
 dependencies = [
-    "Click", "plotext", "tabulate", "wheel"
+    "Click", "plotext", "tabulate", "wheel", "requests", "pydantic"
 ]
 
 scripts = { htr = "htr.cli.cli:cli" }
