@@ -81,6 +81,33 @@ class HabitTrackerClient:
         if response.status_code != 200:
             raise Exception("habit not deleted")
 
+    def get_habit_by_id(self, habit_id: int) -> Habit:
+        url = f"{self.habit_prefix}/{habit_id}"
+        print(f"the url is {url}")
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            raise Exception("an error")
+
+        return Habit(**response.json())
+
+    def list_habits_by_user_id(self) -> list[Habit]:
+        url = f"{self.habit_prefix}/?user_id={self._current_user_id}"
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            raise Exception("an error")
+
+        json_reply = response.json()
+
+        habits: list[Habit] = []
+
+        for habit_json in json_reply:
+            habit: Habit = Habit(**habit_json)
+            habits.append(habit)
+
+        return habits
+
     def list_habits_by_periodicity(self, periodicity: int) -> list[Habit]:
         url = f"{self.habit_prefix}/?user_id={self._current_user_id}&periodicity={periodicity}&offset=0&limit=100"
         response = requests.get(url)
@@ -114,7 +141,7 @@ class HabitTrackerClient:
 
         habits: list[Habit] = []
 
-    def list_habit_events(self, habit_id: Optional[int]) -> list[HabitEvent]:
+    def list_habit_events(self, habit_id: Optional[int] = None) -> list[HabitEvent]:
         url = f"{self.habit_event_prefix}/?user_id={self._current_user_id}&offset=0&limit=100"
 
         if habit_id is not None:
