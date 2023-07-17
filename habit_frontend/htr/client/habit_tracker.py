@@ -52,6 +52,28 @@ class HabitTrackerClient:
 
         return user_id
 
+    def create_habit(self, task: str, periodicity: int):
+        json_body = {
+            "user_id": self._current_user_id,
+            "task": task,
+            "periodicity": periodicity
+        }
+
+        response = requests.post(url=self.habit_prefix, json=json_body)
+
+        if response.status_code != 201:
+            raise Exception("habit not created")
+
+        habit_id = response.json()["habit_id"]
+        return habit_id
+
+    def delete_habit(self, habit_id: int):
+        url = f"{self.habit_prefix}/{habit_id}"
+        response = requests.delete(url)
+
+        if response.status_code != 200:
+            raise Exception("habit not deleted")
+
     def list_habits_by_periodicity(self, periodicity: int) -> list[Habit]:
         url = f"{self.habit_prefix}/?user_id={self._current_user_id}&periodicity={periodicity}&offset=0&limit=100"
         response = requests.get(url)

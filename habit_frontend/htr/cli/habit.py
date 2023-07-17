@@ -10,7 +10,6 @@ from htr.client.habit_tracker import HabitTrackerClient, Habit
 @click.pass_obj
 def habit(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.set_current_user_id(user_id)
-    click.echo(f"habit group with {user_id}")
 
 
 @habit.command()
@@ -34,15 +33,17 @@ def list(habit_tracker_client: HabitTrackerClient, periodicity: int):
 @click.option("--task", prompt=True, help="short description of the task")
 @click.option("--periodicity", prompt=True, type=click.INT, help="periodicity in days")
 @click.pass_obj
-def create(habit_tracker_client: HabitTrackerClient, task: str, description: str, periodicity: int):
-    click.echo(f"create new habit: task {task}, description: {description}, periodicity: {periodicity}")
+def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int):
+    habit_id = habit_tracker_client.create_habit(task, periodicity)
+    click.echo(f"Habit {task} created with id {habit_id}")
 
 
 @habit.command()
 @click.option("--habit-id", required=True, type=click.INT, help="habit id to remove")
 @click.pass_obj
 def delete(habit_tracker_client: HabitTrackerClient, habit_id: int):
-    click.echo(f"delete new habit {habit_id}")
+    habit_tracker_client.delete_habit(habit_id)
+    click.echo(f"habit {habit_id} was deleted")
 
 
 @habit.command()
