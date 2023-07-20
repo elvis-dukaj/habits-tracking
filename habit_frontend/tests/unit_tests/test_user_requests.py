@@ -20,3 +20,4 @@ def test_user_create_success(valid_client, mock_endpoint):
 
     user_id: int = valid_client.add_user(username)
     assert user_id == expected_user_id
+

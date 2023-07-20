@@ -34,7 +34,9 @@ Spaces Connect:
 """
 
 from htr.cli.cli import cli
-from htr.client.habit_tracker import HabitTrackerClient, Habit, HabitEvent
+from htr.client.habit_tracker import HabitTrackerClient
+from htr.schemas.habit import Habit
+from htr.schemas.habit_event import HabitEvent
 
 
 @cli.group()

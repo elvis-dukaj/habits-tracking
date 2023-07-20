@@ -1,21 +1,9 @@
 import requests
 import datetime
 from typing import Optional
-from pydantic import BaseModel
 
-
-class Habit(BaseModel):
-    user_id: int
-    habit_id: int
-    task: str
-    periodicity: int
-
-
-class HabitEvent(BaseModel):
-    user_id: int
-    habit_id: int
-    completed_at: datetime.date
-
+from htr.schemas.habit import Habit
+from htr.schemas.habit_event import HabitEvent
 
 class HabitTrackerClient:
     def __init__(self, endpoint: str):
