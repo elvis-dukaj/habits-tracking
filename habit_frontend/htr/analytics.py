@@ -14,4 +14,7 @@ def convert_habit_event_in_np(events: list[HabitEvent]) -> np.ndarray:
 
 def calculate_streaks(events: list[HabitEvent], periodicity: int):
     arr = convert_habit_event_in_np(events)
-    print(arr)
+    print("numpy array: ", arr)
+    print("numpy array diffs: ", np.diff(arr))
+
+

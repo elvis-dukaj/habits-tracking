@@ -18,8 +18,16 @@ def test_can_get_current_streaks():
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-09"},
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-10"},
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-11"},
+        {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-13"},
+        {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-13"},
+        {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-15"},
+        {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-16"},
+        {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-20"}
     ]
 
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
     calculate_streaks(events, 3)
+    assert False
+
+
