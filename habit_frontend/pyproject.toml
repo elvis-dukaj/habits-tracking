@@ -18,3 +18,7 @@ dependencies = [
 
 scripts = { htr = "htr.cli.cli:cli" }
 
+
+[project.optional-dependencies]
+TEST = ["pytest", "responses"]
+
