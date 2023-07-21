@@ -1,20 +1,21 @@
-from operator import attrgetter
-
 import numpy as np
 
-from htr.schemas.habit import Habit
 from htr.schemas.habit_event import HabitEvent
 
 
-def convert_habit_event_in_np(events: list[HabitEvent]) -> np.ndarray:
-    date_lists = [event.completed_at for event in events]
-    print("dates: ", date_lists)
-    return np.array(date_lists, dtype="datetime64")
+def calculate_record_streak(events: list[HabitEvent], periodicity: int) -> int:
+    completed_events: np.ndarray = np.array([event.completed_at for event in events], dtype=np.datetime64)
+    partial_diff = np.ediff1d(completed_events).astype(np.int32)
+    second_partial_diff = np.ediff1d(partial_diff)
+    grouped_by_periodicity = np.split(partial_diff, np.where(second_partial_diff != 0)[0] + 1)
 
+    record_strike = 0
+    for g in grouped_by_periodicity:
+        # check if the streak was broken
+        if g[0] > periodicity:
+            print(f"the periodicity {g[0]} was bigger than {periodicity}, not considering for the streak")
+            continue
 
-def calculate_streaks(events: list[HabitEvent], periodicity: int):
-    arr = convert_habit_event_in_np(events)
-    print("numpy array: ", arr)
-    print("numpy array diffs: ", np.diff(arr))
+        record_strike = max(record_strike, g.shape[0])
 
-
+    return record_strike
