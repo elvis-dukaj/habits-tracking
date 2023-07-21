@@ -26,8 +26,7 @@ def calculate_record_streak(events: list[HabitEvent], periodicity: int) -> int:
 
 def calculate_current_streak(events: list[HabitEvent], periodicity: int) -> int:
     completed_events: np.ndarray = np.array([event.completed_at for event in events], dtype=np.datetime64)
-    partial_diff = np.ediff1d(completed_events).astype(np.int32)
-    partial_diff = np.flipud(partial_diff)
+    partial_diff = np.flipud(np.ediff1d(completed_events).astype(np.int32))
 
     current_streak = 0
     for delta_time in partial_diff:
