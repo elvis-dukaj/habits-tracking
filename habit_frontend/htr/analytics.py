@@ -30,7 +30,6 @@ def calculate_current_streak(events: list[HabitEvent], periodicity: int) -> int:
 
     current_streak = 0
     for delta_time in partial_diff:
-        print(f"evaluating {delta_time}")
         if delta_time <= periodicity:
             current_streak += 1
             continue

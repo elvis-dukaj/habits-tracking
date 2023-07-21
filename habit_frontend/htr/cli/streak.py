@@ -1,42 +1,13 @@
-import datetime
-import itertools
 from typing import Optional
 import click
 import plotext as plot
-from operator import attrgetter
-from collections import deque
-from itertools import islice
-import numpy
-
-"""
-Philipp and John (privacy), Kevin (Security Team)
-1st privancy
-than security
-
-transparency with the user (sensitivity is low)
- -- user agreement
- -- this is requiring a opt-out
- 
- 
--- VRX:
- -- we cannot do opt-out
-  
-  
--- draft on how it works
-
-Spaces Connect:
- SpacesConnect is How to connect with Spaces Services
-
-
-23.7 targeted release
-
-
-"""
 
 from htr.cli.cli import cli
 from htr.client.habit_tracker import HabitTrackerClient
 from htr.schemas.habit import Habit
 from htr.schemas.habit_event import HabitEvent
+
+from htr.analytics import calculate_current_streak
 
 
 @cli.group()
@@ -47,73 +18,11 @@ def streak(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.set_current_user_id(user_id)
 
 
-def sliding_window_iter(iterable, size):
-    iterable = iter(iterable)
-    window = deque(islice(iterable, size), maxlen=size)
-    for item in iterable:
-        yield tuple(window)
-        window.append(item)
-    if window:
-        yield tuple(window)
-
-
-def calculate_streaks(events: list[HabitEvent], periodicity: int):
-    events.sort(key=attrgetter("completed_at"), reverse=True)
-    streaks: int = 0
-
-    for window in sliding_window_iter(events, 2):
-        current = window[0]
-        previous = window[1]
-
-        delta: datetime.timedelta = current.completed_at - previous.completed_at
-        delta_in_days: int = delta.days
-
-        if delta_in_days <= periodicity:
-            streaks += 1
-        else:
-            break
-
-    return streaks
-
-
-def sequential_difference(events: list[HabitEvent]):
-    streaks: list[int] = []
-
-    for window in sliding_window_iter(events, 2):
-        current = window[0]
-        previous = window[1]
-
-        delta: datetime.timedelta = current.completed_at - previous.completed_at
-        delta_in_days: int = delta.days
-
-        streaks.append(delta_in_days)
-
-    print(streaks)
-    return streaks
-
-
-def calculate_streak_history(elements: list[HabitEvent], periodicity: int):
-    # diffs = sequential_difference(elements)
-
-    print(periodicity)
-    diffs: list[int] = [1, 1, 1, 2, 1, 3, 1, 1]
-
-    previous_element: int = diffs[0]
-    current_streaks = 0
-
-    streak_list = [1 if elem < periodicity else 0 for elem in diffs]
-
-    streak_history = [len(list(group)) for _, group in itertools.groupby(streak_list)]
-
-    print("current streak_list: ", streak_list)
-    print("streak_history: ", streak_history)
-
-
 def calculate_all_streaks(habits: list[tuple[Habit, list[HabitEvent]]]) -> list[int]:
     streaks: list[int] = []
 
     for habit, events in habits:
-        streaks.append(calculate_streaks(events, habit.periodicity))
+        streaks.append(calculate_current_streak(events, habit.periodicity))
 
     return streaks
 
@@ -125,7 +34,7 @@ def display(habit_tracker_client: HabitTrackerClient, habit_id: Optional[int]):
     if habit_id is not None:
         habit = habit_tracker_client.get_habit_by_id(habit_id)
         events: list[HabitEvent] = habit_tracker_client.list_habit_events(habit.habit_id)
-        streaks = calculate_streaks(events, habit.periodicity)
+        streaks = calculate_current_streak(events, habit.periodicity)
         click.echo(f"Habit {habit_id} has {streaks} streaks")
         return
 
@@ -134,7 +43,8 @@ def display(habit_tracker_client: HabitTrackerClient, habit_id: Optional[int]):
     habits = habit_tracker_client.list_habits()
     for habit in habits:
         events = habit_tracker_client.list_habit_events(habit.habit_id)
-        combined_habit_and_events.append((habit, events))
+        combined = (habit, events)
+        combined_habit_and_events.append(combined)
 
     tasks: list[str] = [habit.task for habit in habits]
     streaks = calculate_all_streaks(combined_habit_and_events)
