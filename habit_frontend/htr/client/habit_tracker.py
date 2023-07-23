@@ -5,6 +5,7 @@ from typing import Optional
 from htr.schemas.habit import Habit
 from htr.schemas.habit_event import HabitEvent
 
+
 class HabitTrackerClient:
     def __init__(self, endpoint: str):
         self.endpoint: str = endpoint
@@ -71,7 +72,6 @@ class HabitTrackerClient:
 
     def get_habit_by_id(self, habit_id: int) -> Habit:
         url = f"{self.habit_prefix}/{habit_id}"
-        print(f"the url is {url}")
         response = requests.get(url)
 
         if response.status_code != 200:
@@ -102,7 +102,6 @@ class HabitTrackerClient:
         if periodicity is not None:
             url = f"{url}&periodicity={periodicity}&offset=0&limit=100"
 
-        print(f"url is {url}")
         response = requests.get(url)
 
         if response.status_code != 200:
@@ -124,7 +123,7 @@ class HabitTrackerClient:
             "habit_id": habit_id,
             "completed_at": str(completed_at)
         }
-        print(f"I want to send ti {self.habit_event_prefix} this: {json_body}")
+
         response = requests.post(url=self.habit_event_prefix, json=json_body)
 
         if response.status_code != 201:

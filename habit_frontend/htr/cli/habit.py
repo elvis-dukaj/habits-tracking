@@ -48,8 +48,10 @@ def delete(habit_tracker_client: HabitTrackerClient, habit_id: int):
 
 
 @habit.command()
-@click.option("--habit-id", required=True, type=click.INT, help="habit id to remove")
-@click.option("--completed-date", "completed_date", required=True, type=click.DateTime(formats=["%Y-%m-%d"]),
+@click.option("--habit-id", envvar="HABIT_TRACKER_HABIT_ID", prompt=True, required=True, type=click.INT,
+              help="habit id to remove")
+@click.option("--completed-date", "completed_date", required=True, prompt=True,
+              type=click.DateTime(formats=["%Y-%m-%d"]),
               help="habit id to remove")
 @click.pass_obj
 def complete(habit_tracker_client: HabitTrackerClient, habit_id: int, completed_date: datetime.datetime):
