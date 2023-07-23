@@ -19,6 +19,13 @@ def transform_to_panda_dataframe(events: list[HabitEvent], periodicity: int) -> 
     deltas = np.diff(completed_events)
     # print("delta: ", deltas)
 
+    if len(deltas) == 0:
+        return pd.DataFrame({
+            "start date": [],
+            "end date": [],
+            "streak": []
+        })
+
     streaks = (deltas <= np.timedelta64(periodicity, 'D')) * 1
     # print("streaks: ", streaks)
 

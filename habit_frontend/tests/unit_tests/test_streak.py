@@ -125,7 +125,6 @@ def test_all_streaks():
     assert streak_col.all()
 
 
-
 def test_no_streaks():
     events_json = [
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-01"},
@@ -133,6 +132,28 @@ def test_no_streaks():
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-05"},
         {"user_id": 1, "habit_id": 1, "completed_at": "2023-01-10"},
     ]
+
+    events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
+
+    expected_dataframe = pandas.DataFrame({
+        "start date": [],
+        "end date": [],
+        "streak": []
+    })
+
+    periodicity: int = 1
+    dataframe = transform_to_panda_dataframe(events, periodicity)
+    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
+    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
+    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+
+    assert start_date_col.all()
+    assert end_date_col.all()
+    assert streak_col.all()
+
+
+def test_no_events():
+    events_json = []
 
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
