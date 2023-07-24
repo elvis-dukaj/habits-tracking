@@ -1,4 +1,6 @@
 import datetime
+import pandas
+from tabulate import tabulate
 import click
 from typing import Optional
 
@@ -22,12 +24,8 @@ def list_habits(habit_tracker_client: HabitTrackerClient, periodicity: Optional[
         click.echo("No habits found")
         return
 
-    click.echo(f"Found {len(habits)} habits: \n")
-    for habit_response in habits:
-        click.echo(f" habit[{habit_response.habit_id}] ")
-        click.echo(f"  user_id: {habit_response.user_id}")
-        click.echo(f"  task: '{habit_response.task}'")
-        click.echo(f"  periodicity: {habit_response.periodicity}\n")
+    df = pandas.DataFrame.from_records([dict(h) for h in habits])
+    click.echo(tabulate(df, headers='keys', tablefmt='psql'))
 
 
 @habit.command()

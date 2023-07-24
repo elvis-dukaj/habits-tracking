@@ -14,3 +14,13 @@ def valid_username():
 @pytest.fixture
 def valid_userid():
     return 100
+
+
+@pytest.fixture
+def valid_habit_id():
+    return 200
+
+
+@pytest.fixture
+def valid_habit_task():
+    return "test task"

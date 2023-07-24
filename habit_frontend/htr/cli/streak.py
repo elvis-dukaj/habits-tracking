@@ -10,10 +10,7 @@ from htr.client.habit_tracker import HabitTrackerClient
 from htr.schemas.habit import Habit
 from htr.schemas.habit_event import HabitEvent
 
-from htr.analytics import (
-    calculate_streak_history,
-    transform_to_panda_dataframe
-)
+from htr.analytics import transform_to_panda_dataframe
 
 
 @cli.group()
