@@ -44,7 +44,8 @@ class HabitTrackerClient:
         if response.status_code != 200:
             raise Exception(f"user {username} not found")
 
-        user_id = response.json()["user_id"]
+        json_body = response.json()
+        user_id = json_body["user_id"]
 
         return user_id
 
