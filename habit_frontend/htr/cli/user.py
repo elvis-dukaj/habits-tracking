@@ -15,7 +15,7 @@ def user(habit_tracker_client: HabitTrackerClient):
 @click.option("--username", prompt=True, help="Username")
 def create(client: HabitTrackerClient, username: str):
     user_id = client.add_user(username)
-    click.echo(f"User {username} created with id: {user_id}")
+    click.echo(f"User '{username}' created with user-id {user_id}")
 
 
 @user.command()
@@ -23,7 +23,7 @@ def create(client: HabitTrackerClient, username: str):
 @click.option("--user-id", prompt=True, help="Username")
 def delete(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.delete_user(user_id)
-    click.echo(f"User {user_id} deleted")
+    click.echo(f"User '{user_id}' deleted")
 
 
 @user.command()
@@ -31,4 +31,4 @@ def delete(habit_tracker_client: HabitTrackerClient, user_id: int):
 @click.option("--username", prompt=True, help="user to login")
 def login(habit_tracker_client: HabitTrackerClient, username: str):
     user_id = habit_tracker_client.login(username)
-    click.echo(f"User {username} has user_id {user_id}")
+    click.echo(f"User '{username}' logged in with user-id {user_id}")

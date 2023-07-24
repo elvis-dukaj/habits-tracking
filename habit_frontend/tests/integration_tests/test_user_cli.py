@@ -18,7 +18,7 @@ def test_user_can_create(mock_endpoint, valid_username, valid_userid):
     runner = CliRunner()
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'user', 'create', '--username', valid_username])
 
-    assert f"User {valid_username} created with id: {valid_userid}" in res.output
+    assert f"User '{valid_username}' created with user-id {valid_userid}" in res.output
 
 
 @responses.activate
@@ -34,7 +34,7 @@ def test_user_can_login(mock_endpoint, valid_username, valid_userid):
     runner = CliRunner()
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'user', 'login', '--username', valid_username])
 
-    assert f"User {valid_username} has user_id {valid_userid}" in res.output
+    assert f"User '{valid_username}' logged in with user-id {valid_userid}" in res.output
 
 
 @responses.activate
@@ -46,4 +46,4 @@ def test_user_can_delete(mock_endpoint, valid_userid):
     runner = CliRunner()
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'user', 'delete', '--user-id', valid_userid])
 
-    assert f"User {valid_userid} deleted" in res.output
+    assert f"User '{valid_userid}' deleted" in res.output
