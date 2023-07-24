@@ -14,7 +14,17 @@ pip install .
 Now from inside the virtual environment it's possible to call the `htr` (HabitTRacker) terminal.
 
 ```commandline
-htr --help
+Usage: htr [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --endpoint TEXT  server endpoint
+  --help           Show this message and exit.
+
+Commands:
+  habit
+  streak
+  user
+(.test_env) ➜  htr git:(main) ✗ htr --help
 Usage: htr [OPTIONS] COMMAND [ARGS]...
 
 Options:
