@@ -101,7 +101,7 @@ class HabitTrackerClient:
         url = f"{self.habit_prefix}/?user_id={self._current_user_id}&offset=0&limit=100"
 
         if periodicity is not None:
-            url = f"{url}&periodicity={periodicity}&offset=0&limit=100"
+            url = f"{url}&periodicity={periodicity}"
 
         response = requests.get(url)
 

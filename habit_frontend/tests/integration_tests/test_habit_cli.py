@@ -72,6 +72,34 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
 
 
 @responses.activate
+def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid):
+    habits_with_periodicity_1_json: list = []
+
+    for habit_id in range(10):
+        habits_with_periodicity_1_json.append({
+            "user_id": 1,
+            "habit_id": habit_id,
+            "task": f"task {habit_id}",
+            "periodicity": 1,
+        })
+
+    responses.get(
+        url=f"{mock_endpoint}/habit/?user_id={valid_userid}&offset=0&limit=100&periodicity=1",
+        json=habits_with_periodicity_1_json,
+        status=200
+    )
+
+    df = pandas.DataFrame(habits_with_periodicity_1_json)
+
+    runner = CliRunner()
+    res = runner.invoke(cli, [
+        '--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'list', '--with-periodicity', 1
+    ])
+
+    assert tabulate(df, headers='keys', tablefmt='psql') in res.output
+
+
+@responses.activate
 def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
     responses.delete(url=f"{mock_endpoint}/habit/{valid_habit_id}")
 
@@ -80,3 +108,5 @@ def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
                               valid_habit_id])
 
     assert f"Habit '{valid_habit_id}' deleted" in res.output
+
+
