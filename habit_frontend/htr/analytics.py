@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from tabulate import tabulate
 
-from htr.schemas.habit_event import HabitEvent
+from htr.schemas import HabitEvent
 
 
 def get_delta_times_grouped_by_consecutive_streak(completed_events: np.ndarray):

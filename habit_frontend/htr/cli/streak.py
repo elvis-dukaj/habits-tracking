@@ -7,9 +7,7 @@ import plotext as plot
 
 from htr.cli.cli import cli
 from htr.client.habit_tracker import HabitTrackerClient
-from htr.schemas.habit import Habit
-from htr.schemas.habit_event import HabitEvent
-
+from htr.schemas import Habit, HabitEvent
 from htr.analytics import transform_to_panda_dataframe
 
 

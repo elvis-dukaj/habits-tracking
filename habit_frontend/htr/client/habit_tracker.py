@@ -2,8 +2,7 @@ import requests
 import datetime
 from typing import Optional
 
-from htr.schemas.habit import Habit
-from htr.schemas.habit_event import HabitEvent
+from htr.schemas import Habit, HabitEvent
 
 
 class HabitTrackerClient:
