@@ -110,3 +110,31 @@ def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
     assert f"Habit '{valid_habit_id}' deleted" in res.output
 
 
+@responses.activate
+def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
+                                         valid_habit_event_completed_date, valid_habit_task):
+    responses.post(
+        url=f"{mock_endpoint}/habit_event",
+        json={
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": valid_habit_event_completed_date,
+            "habit_event_id": valid_habit_event_id
+        },
+        status=201
+    )
+    responses.get(
+        url=f"{mock_endpoint}/habit/{valid_habit_id}",
+        json={
+            "user_id": valid_userid,
+            "task": valid_habit_task,
+            "periodicity": 3,
+            "habit_id": valid_habit_id
+        }
+    )
+
+    runner = CliRunner()
+    res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'complete', '--habit-id',
+                              valid_habit_id, '--completed-date', valid_habit_event_completed_date])
+
+    assert f"Habit '{valid_habit_task}' completed" in res.output

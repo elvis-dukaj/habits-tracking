@@ -98,6 +98,8 @@ class DatabaseClient:
 
             session.add(created_habit)
             session.commit()
+            session.refresh(created_habit)
+            return created_habit
 
     def delete_habit_event(self, habit_event_id: int):
         with Session(self.engine) as session:

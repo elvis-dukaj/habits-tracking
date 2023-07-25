@@ -131,8 +131,7 @@ class HabitTrackerClient:
             raise Exception("an error")
 
         json_reply = response.json()
-
-        habits: list[Habit] = []
+        return HabitEvent(**json_reply)
 
     def list_habit_events(self, habit_id: Optional[int] = None) -> list[HabitEvent]:
         url = f"{self.habit_event_prefix}/?user_id={self._current_user_id}&offset=0&limit=100"

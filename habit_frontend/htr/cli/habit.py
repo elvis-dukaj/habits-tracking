@@ -54,4 +54,5 @@ def delete(habit_tracker_client: HabitTrackerClient, habit_id: int):
 @click.pass_obj
 def complete(habit_tracker_client: HabitTrackerClient, habit_id: int, completed_date: datetime.datetime):
     habit_tracker_client.mark_habit_completed(habit_id, completed_date.date())
-    click.echo(f"habit {habit_id} was marked as completed")
+    requested_habit = habit_tracker_client.get_habit_by_id(habit_id)
+    click.echo(f"Habit '{requested_habit.task}' completed")

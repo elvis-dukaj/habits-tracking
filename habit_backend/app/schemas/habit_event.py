@@ -17,5 +17,5 @@ class HabitEventComplete(HabitEventBase):
     pass
 
 
-class HabitEventRead(HabitEventBase):
+class HabitEventRead(HabitEvent):
     pass

@@ -24,3 +24,13 @@ def valid_habit_id():
 @pytest.fixture
 def valid_habit_task():
     return "test task"
+
+
+@pytest.fixture
+def valid_habit_event_completed_date():
+    return "2023-07-24"
+
+
+@pytest.fixture
+def valid_habit_event_id():
+    return 1000

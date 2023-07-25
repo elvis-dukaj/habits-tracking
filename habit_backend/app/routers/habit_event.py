@@ -11,9 +11,10 @@ def create_habit_event_routers(habit_service: HabitsTrackingService) -> APIRoute
         tags=["habit_event"]
     )
 
-    @routers.post("/", status_code=201)
+    @routers.post("/", response_model=HabitEventRead, status_code=201)
     def mark_habit_completed(habit_event: HabitEventComplete):
-        habit_service.mark_habit_completed(habit_event)
+        created_habit_event = habit_service.mark_habit_completed(habit_event)
+        return created_habit_event
 
     @routers.get("/id/{habit_event_id}", response_model=HabitEventRead)
     def get_habit_event_by_id(habit_event_id: int):
