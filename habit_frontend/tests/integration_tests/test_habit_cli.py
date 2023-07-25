@@ -2,7 +2,6 @@ import pandas
 from click.testing import CliRunner
 import responses
 from tabulate import tabulate
-import click
 import plotext as plot
 
 from htr.cli import cli
@@ -70,3 +69,14 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'list'])
 
     assert tabulate(df, headers='keys', tablefmt='psql') in res.output
+
+
+@responses.activate
+def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
+    responses.delete(url=f"{mock_endpoint}/habit/{valid_habit_id}")
+
+    runner = CliRunner()
+    res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'delete', '--habit-id',
+                              valid_habit_id])
+
+    assert f"Habit '{valid_habit_id}' deleted" in res.output

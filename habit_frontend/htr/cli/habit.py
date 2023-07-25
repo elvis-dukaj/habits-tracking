@@ -42,7 +42,7 @@ def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int
 @click.pass_obj
 def delete(habit_tracker_client: HabitTrackerClient, habit_id: int):
     habit_tracker_client.delete_habit(habit_id)
-    click.echo(f"habit {habit_id} was deleted")
+    click.echo(f"Habit '{habit_id}' deleted")
 
 
 @habit.command()
