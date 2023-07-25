@@ -245,3 +245,81 @@ def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, val
     })
 
     assert tabulate_dataframe(df) in res.output
+
+
+@responses.activate
+def test_habit_can_show_statistic(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
+                                  valid_habit_event_completed_date, valid_habit_task):
+    habit_json = {
+        "user_id": valid_userid,
+        "task": valid_habit_task,
+        "periodicity": 1,
+        "habit_id": valid_habit_id
+    }
+
+    responses.get(
+        url=f"{mock_endpoint}/habit/{valid_habit_id}",
+        json=habit_json
+    )
+
+    habit_events_json = [
+        {
+            "habit_event_id": 1,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-18"
+        },
+        {
+            "habit_event_id": 2,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-19"
+        },
+        {
+            "habit_event_id": 3,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-20"
+        },
+        {
+            "habit_event_id": 4,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-21"
+        },
+        {
+            "habit_event_id": 5,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-30"
+        },
+        {
+            "habit_event_id": 6,
+            "user_id": valid_userid,
+            "habit_id": valid_habit_id,
+            "completed_at": "2023-07-31"
+        }
+    ]
+
+    responses.get(
+        url=f"{mock_endpoint}/habit_event/?user_id={valid_userid}&offset=0&limit=100&habit_id={valid_habit_id}",
+        json=habit_events_json
+    )
+
+    runner = CliRunner()
+    res = runner.invoke(
+        cli, [
+            '--endpoint', mock_endpoint,
+            'habit', '--user-id', valid_userid,
+            'statistic', '--habit-id', valid_habit_id
+        ]
+    )
+
+    df = pandas.DataFrame({
+        "Longest": [3],
+        "Last": [1],
+        "Median": [2],
+        "Mean": [2],
+    })
+
+    assert tabulate_dataframe(df) in res.output
