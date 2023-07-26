@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from tabulate import tabulate
 
-from htr.schemas import HabitEvent
+from htr.schemas import Habit, HabitEvent
 
 
 def get_delta_times_grouped_by_consecutive_streak(completed_events: np.ndarray):
@@ -81,3 +81,38 @@ def get_habit_events_statistic(dataframe: pd.DataFrame):
     }, index=[0])
 
     return statistics_frame
+
+
+def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]]) -> pd.DataFrame:
+    habit_id_series = pd.Series([habit.habit_id for habit, _ in habits_and_events])
+    tasks = pd.Series([habit.task for habit, _ in habits_and_events])
+    periodicities = pd.Series([habit.periodicity for habit, _ in habits_and_events])
+
+    current_streaks_list: list[int] = []
+    longest_streaks_list: list[int] = []
+    average_streaks_list: list[float] = []
+
+    for habit, events in habits_and_events:
+        if len(events) > 0:
+            df = transform_to_panda_dataframe(events, habit.habit_id)
+            stat = get_habit_events_statistic(df)
+            current_streaks_list.append(stat['Last'][stat.last_valid_index()])
+            longest_streaks_list.append(stat['Longest'][stat.last_valid_index()])
+            average_streaks_list.append(stat['Mean'][stat.last_valid_index()])
+        else:
+            current_streaks_list.append(0)
+            longest_streaks_list.append(0)
+            average_streaks_list.append(0)
+
+    current_streaks: pd.Series = pd.Series(current_streaks_list)
+    longest_streaks: pd.Series = pd.Series(longest_streaks_list)
+    average_streaks: pd.Series = pd.Series(average_streaks_list)
+
+    return pd.DataFrame({
+        "Habit ID": habit_id_series,
+        "Task": tasks,
+        "Periodicity": periodicities,
+        "Current Streak": current_streaks,
+        "Longest Streak": longest_streaks,
+        "Average Streak": average_streaks,
+    })
