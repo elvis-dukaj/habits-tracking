@@ -56,19 +56,19 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
             "2023-07-21",  # 1 streaks
         ],  # call my granny
         [
-            "2023-07-01",
+            "2023-07-01",  # no last streak
         ],  # stretching
         [
             "2023-07-20",
             "2023-07-21",
-            "2023-07-22"
+            "2023-07-22",  # 2 streaks
         ],  # clean the flat
         [
             "2023-01-01",
             "2023-02-01",
             "2023-03-01",
             "2023-04-01",
-            "2023-05-01",
+            "2023-05-01",  # no last streak
         ],
         [],  # reading a book
         [],  # walk for 2km
@@ -90,11 +90,11 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
             json=events_json
         )
 
-    expected_last_streaks = [1, 1, 0, 2, 0, 0, 0]
     expected_longest_streaks = [3, 1, 0, 2, 0, 0, 0]
+    expected_last_streaks = [1, 1, 0, 2, 0, 0, 0]
     expected_mean_streaks = [2, 1, 0, 2, 0, 0, 0]
     expected_expected_streak = [41, 1, 0, 2, 17, 0, 0]
-    expected_streaka = [0.146341, 1, 0, 1, 0, 0, 0]
+    expected_score = [0.146341, 1, 0, 1, 0, 0, 0]
 
     expected_dataframe = pandas.DataFrame({
         "Habit ID": habits_id,
@@ -104,7 +104,7 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
         "Longest Streak": expected_longest_streaks,
         "Average Streak": expected_mean_streaks,
         "Expected Streaks": expected_expected_streak,
-        "Score": expected_streaka,
+        "Score": expected_score,
     })
 
     runner = CliRunner()

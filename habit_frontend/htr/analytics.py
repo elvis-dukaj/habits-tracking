@@ -51,7 +51,6 @@ def get_habit_events_history(events: list[HabitEvent], periodicity: int) -> pd.D
         })
 
     if np.all(streaks == 0):
-        print("all streak")
         return pd.DataFrame({
             "Start Date": [],
             "End Date": [],
@@ -88,29 +87,34 @@ def tabulate_dataframe(dataframe: pd.DataFrame):
 
 
 def get_habit_events_statistic(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
-    df = get_habit_events_history(events, periodicity)
+    streak_history = get_habit_events_history(events, periodicity)
 
-    if df.empty:
+    expected_streaks = get_expected_streaks(events, periodicity)
+
+    if streak_history.empty:
         return pd.DataFrame({
             "Longest": [0],
             "Last": [0],
             "Median": [0],
             "Mean": [0],
             "Total Streaks": [0],
-            "Expected Streaks": [0],
+            "Expected Streaks": [expected_streaks],
             "Score": [0]
         })
 
-    total_streaks = df.Streak.sum()
-    expected_streaks = get_expected_streaks(events, periodicity)
-    score = calculate_score(expected_streaks, total_streaks)
+    longest = streak_history.max()["Streak"]
+    last = streak_history.iloc[-1]["Streak"]
+    median = streak_history.median()["Streak"]
+    mean = streak_history.mean()["Streak"]
+    total = streak_history["Streak"].sum()
+    score = calculate_score(expected_streaks, total)
 
     stat = pd.DataFrame({
-        "Longest": [df["Streak"].max()],
-        "Last": [df.Streak.iloc[-1]],
-        "Median": [df.Streak.median()],
-        "Mean": [df.Streak.mean()],
-        "Total Streaks": [total_streaks],
+        "Longest": [longest],
+        "Last": [last],
+        "Median": [median],
+        "Mean": [mean],
+        "Total Streaks": [total],
         "Expected Streaks": [expected_streaks],
         "Score": [score]
     })
@@ -131,15 +135,13 @@ def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]])
 
     for habit, events in habits_and_events:
         if len(events) > 0:
-            stat = get_habit_events_statistic(events, habit.habit_id)
+            stat = get_habit_events_statistic(events, habit.periodicity)
             current_streaks_list.append(stat['Last'][stat.last_valid_index()])
             longest_streaks_list.append(stat['Longest'][stat.last_valid_index()])
             average_streaks_list.append(stat['Mean'][stat.last_valid_index()])
-
-            expected_streaks = get_expected_streaks(events, habit.periodicity)
-            total_streaks = stat['Total Streaks'][stat.last_valid_index()]
-            expected_streak_list.append(expected_streaks)
-            scores_list.append(calculate_score(expected_streaks, total_streaks))
+            # total_streaks = stat['Total Streaks'][stat.last_valid_index()]
+            expected_streak_list.append(stat['Expected Streaks'][stat.last_valid_index()])
+            scores_list.append(stat['Score'][stat.last_valid_index()])
         else:
             current_streaks_list.append(0)
             longest_streaks_list.append(0)
