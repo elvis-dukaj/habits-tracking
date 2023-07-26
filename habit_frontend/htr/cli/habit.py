@@ -63,15 +63,6 @@ def complete(habit_tracker_client: HabitTrackerClient, habit_id: int, completed_
 @click.option("--habit-id", envvar="HABIT_TRACKER_HABIT_ID", prompt=True, required=True, type=click.INT,
               help="habit to view")
 @click.pass_obj
-def view(habit_tracker_client: HabitTrackerClient, habit_id: int):
-    hbt = habit_tracker_client.get_habit_by_id(habit_id)
-    click.echo(tabulate(hbt))
-
-
-@habit.command()
-@click.option("--habit-id", envvar="HABIT_TRACKER_HABIT_ID", prompt=True, required=True, type=click.INT,
-              help="habit to view")
-@click.pass_obj
 def history(habit_tracker_client: HabitTrackerClient, habit_id: int):
     hbt = habit_tracker_client.get_habit_by_id(habit_id)
     events: list[HabitEvent] = habit_tracker_client.list_habit_events(hbt.habit_id)

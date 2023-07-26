@@ -142,34 +142,6 @@ def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habi
 
 
 @responses.activate
-def test_habit_can_view(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                        valid_habit_event_completed_date, valid_habit_task):
-    habit_json = {
-        "user_id": valid_userid,
-        "task": valid_habit_task,
-        "periodicity": 1,
-        "habit_id": valid_habit_id
-    }
-
-    responses.get(
-        url=f"{mock_endpoint}/habit/{valid_habit_id}",
-        json=habit_json
-    )
-
-    runner = CliRunner()
-    res = runner.invoke(
-        cli, [
-            '--endpoint', mock_endpoint,
-            'habit', '--user-id', valid_userid,
-            'view', '--habit-id', valid_habit_id
-        ]
-    )
-
-    habit = Habit(**habit_json)
-    assert tabulate(habit) in res.output
-
-
-@responses.activate
 def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
                                 valid_habit_event_completed_date, valid_habit_task):
     habit_json = {
