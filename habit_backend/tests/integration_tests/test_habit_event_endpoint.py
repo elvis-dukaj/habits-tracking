@@ -1,4 +1,4 @@
-from app.schemas.habit_event import HabitEventRead
+from app.schemas import HabitEventRead
 
 
 def test_habit_event_is_marked_as_completed(mock_application, habit_event_url, valid_user_id, valid_habit_id,

@@ -1,8 +1,8 @@
 from typing import Optional
 from fastapi import APIRouter, Query
 
-from app.service.habit_tracker import HabitsTrackingService
-from app.schemas.habit import HabitRead, HabitCreate
+from app.service import HabitsTrackingService
+from app.schemas import HabitRead, HabitCreate
 
 
 def create_habit_routers(habit_service: HabitsTrackingService) -> APIRouter:

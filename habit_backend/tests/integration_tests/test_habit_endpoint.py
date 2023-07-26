@@ -1,5 +1,4 @@
-
-from app.schemas.habit import HabitRead
+from app.schemas import HabitRead
 
 
 def test_habit_create_success(mock_application, habit_url, valid_user_id):

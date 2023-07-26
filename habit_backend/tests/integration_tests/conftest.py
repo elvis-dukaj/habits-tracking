@@ -7,8 +7,7 @@ from fastapi.testclient import TestClient
 
 from main import create_service, create_app
 from app.config import Config
-from app.schemas.user import User
-from app.db.client import DatabaseClient
+from app.db import DatabaseClient
 
 
 @pytest.fixture(scope="session")
@@ -98,7 +97,6 @@ def valid_habit_id():
 @pytest.fixture
 def valid_habit_event_date():
     return "2023-07-17"
-
 
 
 @pytest.fixture

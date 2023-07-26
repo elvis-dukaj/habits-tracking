@@ -1,9 +1,16 @@
 import datetime
 from sqlmodel import Session, select
 
-from app.schemas.user import UserCreate, UserRead, User
-from app.schemas.habit import HabitCreate, Habit
-from app.schemas.habit_event import HabitEventComplete, HabitEvent
+from app.schemas import (
+    UserCreate,
+    UserRead,
+    User,
+    HabitCreate,
+    Habit,
+    HabitEventComplete,
+    HabitEvent
+)
+
 from app.exception import UserNotFoundError, HabitNotFoundError
 
 

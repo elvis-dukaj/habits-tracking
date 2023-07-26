@@ -1,6 +1,4 @@
-import pytest
-
-from app.schemas.user import UserRead, UserCreate
+from app.schemas import UserRead, UserCreate
 
 
 def test_user_create_success(mock_application, user_url, valid_user_id, valid_username):

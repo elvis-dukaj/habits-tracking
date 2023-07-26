@@ -1,10 +1,8 @@
 from sqlmodel import create_engine, SQLModel
 from fastapi import FastAPI
 
-from app.service.habit_tracker import HabitsTrackingService
-from app.routers.user import create_user_routers
-from app.routers.habit import create_habit_routers
-from app.routers.habit_event import create_habit_event_routers
+from app.service import HabitsTrackingService
+from app.routers import create_user_routers, create_habit_routers, create_habit_event_routers
 from app.exception_handler import add_exception_handler
 from app.db.client import DatabaseClient
 from app.config import Config

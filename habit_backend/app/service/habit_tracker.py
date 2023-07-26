@@ -1,10 +1,9 @@
-from typing import Optional
-import datetime
-
-from app.schemas.user import UserCreate, UserRead
-from app.schemas.habit import HabitCreate, HabitRead
-from app.schemas.habit_event import HabitEventComplete
-from app.db.client import DatabaseClient
+from app.schemas import (
+    UserCreate, UserRead,
+    HabitCreate, HabitRead,
+    HabitEventComplete
+)
+from app.db import DatabaseClient
 
 
 class HabitsTrackingService:
