@@ -14,7 +14,7 @@ def statistic(habit_tracker_client: HabitTrackerClient, user_id: int):
 
 
 @statistic.command()
-@click.option("--order-by", type=click.Choice(['habit', 'current', 'longest', 'mean', 'periodicity']), default='habit')
+@click.option("--order-by", type=click.Choice(['habit', 'current', 'longest', 'mean', 'periodicity', 'score']), default='habit')
 @click.option("--ascending", is_flag=True, default=True)
 @click.pass_obj
 def view(habit_tracker_client: HabitTrackerClient, order_by: str, ascending: bool):
@@ -38,6 +38,9 @@ def view(habit_tracker_client: HabitTrackerClient, order_by: str, ascending: boo
 
     if order_by == 'periodicity':
         click.echo(tabulate_dataframe(df.sort_values(by=['Periodicity'], ascending=ascending)))
+
+    if order_by == 'score':
+        click.echo(tabulate_dataframe(df.sort_values(by=['Score'], ascending=ascending)))
 
     if order_by == 'habit':
         click.echo(tabulate_dataframe(df.sort_values(by=['Habit ID'], ascending=ascending)))
