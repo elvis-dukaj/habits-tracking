@@ -4,7 +4,7 @@ from sqlmodel import Session, select
 from app.schemas.user import UserCreate, UserRead, User
 from app.schemas.habit import HabitCreate, Habit
 from app.schemas.habit_event import HabitEventComplete, HabitEvent
-from app.exception import UserNotFoundError
+from app.exception import UserNotFoundError, HabitNotFoundError
 
 
 class DatabaseClient:
@@ -65,7 +65,7 @@ class DatabaseClient:
             habit = session.get(Habit, habit_id)
 
             if habit is None:
-                raise UserNotFoundError()
+                raise HabitNotFoundError()
 
             return habit
 
@@ -112,7 +112,7 @@ class DatabaseClient:
             habit_event = session.get(HabitEvent, habit_event_id)
 
             if habit_event is None:
-                raise UserNotFoundError()
+                raise HabitNotFoundError()
 
             return habit_event
 
