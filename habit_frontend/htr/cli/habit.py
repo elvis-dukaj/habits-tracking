@@ -35,7 +35,7 @@ def list_habits(habit_tracker_client: HabitTrackerClient, periodicity: Optional[
 @click.pass_obj
 def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int):
     habit_id = habit_tracker_client.create_habit(task, periodicity)
-    click.echo(f"Habit {task} created with id {habit_id}")
+    click.echo(f"Habit '{task}' created with id {habit_id}")
 
 
 @habit.command()

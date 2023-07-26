@@ -27,7 +27,7 @@ def test_habit_can_create(mock_endpoint, valid_userid, valid_habit_task, valid_h
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'create', '--task',
                               valid_habit_task, "--periodicity", expected_periodicity])
 
-    assert f"Habit {valid_habit_task} created with id {valid_habit_id}" in res.output
+    assert f"Habit '{valid_habit_task}' created with id {valid_habit_id}" in res.output
 
 
 @responses.activate
