@@ -2,10 +2,9 @@ import pandas
 from click.testing import CliRunner
 import responses
 from tabulate import tabulate
-import plotext as plot
 
 from htr.cli import cli
-from htr.schemas import Habit, HabitEvent
+from htr.schemas import Habit
 from htr.analytics import tabulate_dataframe
 
 
