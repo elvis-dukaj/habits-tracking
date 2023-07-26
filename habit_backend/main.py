@@ -29,7 +29,22 @@ def create_service(db_client: DatabaseClient) -> HabitsTrackingService:
 
 
 def create_app(service: HabitsTrackingService):
-    fast_api = FastAPI()
+    tags_metadata = [
+        {
+            "name": "user",
+            "description": "Operations with users. The **login** logic is also here.",
+        },
+        {
+            "name": "habit",
+            "description": "Operation with the habits",
+        },
+        {
+            "name": "habit_event",
+            "description": "Operation with the habit_event",
+        },
+    ]
+
+    fast_api = FastAPI(openapi_tags=tags_metadata)
 
     user_routers = create_user_routers(service)
     habit_routers = create_habit_routers(service)
