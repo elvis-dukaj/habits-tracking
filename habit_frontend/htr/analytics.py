@@ -94,7 +94,6 @@ def calculate_score(expected_streaks: int, actual_streak: int) -> float:
 
 
 def get_habit_events_statistic(dataframe: pd.DataFrame):
-    # TODO: we could add also the expected streak for the data range! so could calculate a score for the habit
     if dataframe.empty:
         return pd.DataFrame({
             "Longest": [0],
