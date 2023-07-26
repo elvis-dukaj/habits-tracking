@@ -7,10 +7,27 @@ from tabulate import tabulate
 from htr.schemas import Habit, HabitEvent
 
 
-def get_delta_times_grouped_by_consecutive_streak(completed_events: np.ndarray):
-    partial_diffs = np.diff(completed_events).astype(np.int32)
-    second_partial_diff = np.ediff1d(partial_diffs)
-    return np.split(partial_diffs, np.where(second_partial_diff != 0)[0] + 1)
+def get_expected_streaks(events: list[HabitEvent], periodicity: int) -> int:
+    if len(events) < 2:
+        return 0
+
+    start_date: datetime.date = events[0].completed_at
+    end_date: datetime.date = events[-1].completed_at
+
+    elapsed = end_date - start_date
+    elapsed_days = elapsed.days
+
+    return elapsed_days // periodicity
+
+
+def calculate_score(expected_streaks: int, actual_streak: int) -> float:
+    if expected_streaks == 0:
+        return 0.0
+
+    if actual_streak > expected_streaks:
+        return 1.0
+
+    return actual_streak / expected_streaks
 
 
 def get_habit_events_history(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
@@ -70,29 +87,6 @@ def tabulate_dataframe(dataframe: pd.DataFrame):
     return tabulate(dataframe, headers='keys', tablefmt='psql', showindex=False)
 
 
-def get_expected_streaks(events: list[HabitEvent], periodicity: int) -> int:
-    if len(events) < 2:
-        return 0
-
-    start_date: datetime.date = events[0].completed_at
-    end_date: datetime.date = events[-1].completed_at
-
-    elapsed = end_date - start_date
-    elapsed_days = elapsed.days
-
-    return elapsed_days // periodicity
-
-
-def calculate_score(expected_streaks: int, actual_streak: int) -> float:
-    if expected_streaks == 0:
-        return 0.0
-
-    if actual_streak > expected_streaks:
-        return 1.0
-
-    return actual_streak / expected_streaks
-
-
 def get_habit_events_statistic(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
     df = get_habit_events_history(events, periodicity)
 
@@ -103,14 +97,22 @@ def get_habit_events_statistic(events: list[HabitEvent], periodicity: int) -> pd
             "Median": [0],
             "Mean": [0],
             "Total Streaks": [0],
+            "Expected Streaks": [0],
+            "Score": [0]
         })
 
+    total_streaks = df.Streak.sum()
+    expected_streaks = get_expected_streaks(events, periodicity)
+    score = calculate_score(expected_streaks, total_streaks)
+
     stat = pd.DataFrame({
-        "Longest": [df.Streak.max()],
+        "Longest": [df["Streak"].max()],
         "Last": [df.Streak.iloc[-1]],
         "Median": [df.Streak.median()],
         "Mean": [df.Streak.mean()],
-        "Total Streaks": [df.Streak.sum()],
+        "Total Streaks": [total_streaks],
+        "Expected Streaks": [expected_streaks],
+        "Score": [score]
     })
 
     return stat
