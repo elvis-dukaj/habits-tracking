@@ -19,26 +19,26 @@ def transform_to_panda_dataframe(events: list[HabitEvent], periodicity: int) -> 
 
     if len(deltas) == 0:
         return pd.DataFrame({
-            "start date": [],
-            "end date": [],
-            "streak": []
+            "Start Date": [],
+            "End Date": [],
+            "Streak": [],
         })
 
     streaks = (deltas <= np.timedelta64(periodicity, 'D')) * 1
 
     if np.all(streaks == 1):
         return pd.DataFrame({
-            "start date": [completed_events[0]],
-            "end date": [completed_events[-1]],
-            "streak": [len(completed_events) - 1]
+            "Start Date": [completed_events[0]],
+            "End Date": [completed_events[-1]],
+            "Streak": [len(completed_events) - 1]
         })
 
     if np.all(streaks == 0):
         print("all streak")
         return pd.DataFrame({
-            "start date": [],
-            "end date": [],
-            "streak": []
+            "Start Date": [],
+            "End Date": [],
+            "Streak": []
         })
 
     change_in_streaks = np.diff(streaks)
@@ -58,9 +58,9 @@ def transform_to_panda_dataframe(events: list[HabitEvent], periodicity: int) -> 
     idx = np.r_[prefix, streak_changes_index + 1, postfix]
 
     df = pd.DataFrame({
-        "start date": completed_events[idx][::2],
-        "end date": completed_events[idx][1::2],
-        "streak": np.diff(idx)[::2]
+        "Start Date": completed_events[idx][::2],
+        "End Date": completed_events[idx][1::2],
+        "Streak": np.diff(idx)[::2]
     })
 
     return df
@@ -104,11 +104,11 @@ def get_habit_events_statistic(dataframe: pd.DataFrame):
         })
 
     return pd.DataFrame({
-        "Longest": [dataframe.streak.max()],
-        "Last": [dataframe.streak.iloc[-1]],
-        "Median": [dataframe.streak.median()],
-        "Mean": [dataframe.streak.mean()],
-        "Total Streaks": [dataframe.streak.sum()],
+        "Longest": [dataframe.Streak.max()],
+        "Last": [dataframe.Streak.iloc[-1]],
+        "Median": [dataframe.Streak.median()],
+        "Mean": [dataframe.Streak.mean()],
+        "Total Streaks": [dataframe.Streak.sum()],
     })
 
 

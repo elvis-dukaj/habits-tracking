@@ -279,9 +279,9 @@ def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, val
     )
 
     df = pandas.DataFrame({
-        "start date": ["2023-07-18 00:00:00", "2023-07-30 00:00:00"],
-        "end date": ["2023-07-21 00:00:00", "2023-07-31 00:00:00"],
-        "streak": [3, 1],
+        "Start Date": ["2023-07-18 00:00:00", "2023-07-30 00:00:00"],
+        "End Date": ["2023-07-21 00:00:00", "2023-07-31 00:00:00"],
+        "Streak": [3, 1],
     })
 
     assert tabulate_dataframe(df) in res.output

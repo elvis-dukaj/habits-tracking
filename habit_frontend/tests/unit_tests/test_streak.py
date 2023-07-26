@@ -20,16 +20,16 @@ def test_transform_to_dataframe_first_and_last_should_be_added():
     periodicity: int = 3
 
     expected_dataframe = pandas.DataFrame({
-        "start date": [' 2023-01-01', '2023-01-11', '2023-01-18'],
-        "end date": [' 2023-01-07', '2023-01-14', '2023-01-24'],
-        "streak": [2, 1, 2]
+        "Start Date": [' 2023-01-01', '2023-01-11', '2023-01-18'],
+        "End Date": [' 2023-01-07', '2023-01-14', '2023-01-24'],
+        "Streak": [2, 1, 2]
     })
 
     dataframe = transform_to_panda_dataframe(events, periodicity)
     # assert dataframe == expected_dataframe
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
     assert start_date_col.all()
     assert end_date_col.all()
     assert streak_col.all()
@@ -51,16 +51,16 @@ def test_transform_to_dataframe_first_should_be_added_last_not():
     periodicity: int = 3
 
     expected_dataframe = pandas.DataFrame({
-        "start date": [' 2023-01-01', '2023-01-11', '2023-01-18'],
-        "end date": [' 2023-01-07', '2023-01-14', '2023-01-21'],
-        "streak": [2, 1, 1]
+        "Start Date": [' 2023-01-01', '2023-01-11', '2023-01-18'],
+        "End Date": [' 2023-01-07', '2023-01-14', '2023-01-21'],
+        "Streak": [2, 1, 1]
     })
 
     dataframe = transform_to_panda_dataframe(events, periodicity)
     # assert dataframe == expected_dataframe
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
     assert start_date_col.all()
     assert end_date_col.all()
     assert streak_col.all()
@@ -82,16 +82,16 @@ def test_transform_to_dataframe__should__not_add_first_and_last():
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
     expected_dataframe = pandas.DataFrame({
-        "start date": ['2023-01-10', '2023-02-10'],
-        "end date": ['2023-01-13', '2023-02-12'],
-        "streak": [1, 1]
+        "Start Date": ['2023-01-10', '2023-02-10'],
+        "End Date": ['2023-01-13', '2023-02-12'],
+        "Streak": [1, 1]
     })
 
     periodicity: int = 3
     dataframe = transform_to_panda_dataframe(events, periodicity)
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
 
     assert start_date_col.all()
     assert end_date_col.all()
@@ -109,16 +109,16 @@ def test_all_streaks():
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
     expected_dataframe = pandas.DataFrame({
-        "start date": ['2023-01-01'],
-        "end date": ['2023-01-04'],
-        "streak": [3]
+        "Start Date": ['2023-01-01'],
+        "End Date": ['2023-01-04'],
+        "Streak": [3]
     })
 
     periodicity: int = 1
     dataframe = transform_to_panda_dataframe(events, periodicity)
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
 
     assert start_date_col.all()
     assert end_date_col.all()
@@ -136,16 +136,16 @@ def test_no_streaks():
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
     expected_dataframe = pandas.DataFrame({
-        "start date": [],
-        "end date": [],
-        "streak": []
+        "Start Date": [],
+        "End Date": [],
+        "Streak": []
     })
 
     periodicity: int = 1
     dataframe = transform_to_panda_dataframe(events, periodicity)
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
 
     assert start_date_col.all()
     assert end_date_col.all()
@@ -158,16 +158,16 @@ def test_no_events():
     events: list[HabitEvent] = [HabitEvent(**event_json) for event_json in events_json]
 
     expected_dataframe = pandas.DataFrame({
-        "start date": [],
-        "end date": [],
-        "streak": []
+        "Start Date": [],
+        "End Date": [],
+        "Streak": []
     })
 
     periodicity: int = 1
     dataframe = transform_to_panda_dataframe(events, periodicity)
-    start_date_col = (dataframe['start date'] == expected_dataframe['start date'])
-    end_date_col = (dataframe['end date'] == expected_dataframe['end date'])
-    streak_col = (dataframe['streak'] == expected_dataframe['streak'])
+    start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
+    end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
+    streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
 
     assert start_date_col.all()
     assert end_date_col.all()
