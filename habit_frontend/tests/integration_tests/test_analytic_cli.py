@@ -53,13 +53,10 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
         ],
         [  # learn German
             "2023-07-20",
-            "2023-07-21",
-            "2023-07-22"
+            "2023-07-21",  # 1 streaks
         ],  # call my granny
         [
             "2023-07-01",
-            "2023-07-11",
-            "2023-07-22"
         ],  # stretching
         [
             "2023-07-20",
@@ -67,8 +64,11 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
             "2023-07-22"
         ],  # clean the flat
         [
-            "2023-07-01",
-            "2023-07-22"
+            "2023-01-01",
+            "2023-02-01",
+            "2023-03-01",
+            "2023-04-01",
+            "2023-05-01",
         ],
         [],  # reading a book
         [],  # walk for 2km
@@ -90,15 +90,15 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
             json=events_json
         )
 
-    expected_current_streaks = [1, 2, 0, 2, 0, 0, 0]
-    expected_longest_streaks = [3, 2, 0, 2, 0, 0, 0]
-    expected_mean_streaks = [2, 2, 0, 2, 0, 0, 0]
+    expected_last_streaks = [1, 1, 0, 2, 0, 0, 0]
+    expected_longest_streaks = [3, 1, 0, 2, 0, 0, 0]
+    expected_mean_streaks = [2, 1, 0, 2, 0, 0, 0]
 
     expected_dataframe = pandas.DataFrame({
         "Habit ID": habits_id,
         "Task": habits_task,
         "Periodicity": habits_periodicities,
-        "Current Streak": expected_current_streaks,
+        "Last Streak": expected_last_streaks,
         "Longest Streak": expected_longest_streaks,
         "Average Streak": expected_mean_streaks,
     })
