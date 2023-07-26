@@ -6,7 +6,7 @@ from typing import Optional
 
 from htr.cli.cli import cli
 from htr.client.habit_tracker import HabitTrackerClient, Habit, HabitEvent
-from htr.analytics import transform_to_panda_dataframe, get_habit_events_statistic, tabulate_dataframe
+from htr.analytics import get_habit_events_statistic, tabulate_dataframe, get_habit_events_history
 
 
 @cli.group()
@@ -75,13 +75,13 @@ def view(habit_tracker_client: HabitTrackerClient, habit_id: int):
 def history(habit_tracker_client: HabitTrackerClient, habit_id: int):
     hbt = habit_tracker_client.get_habit_by_id(habit_id)
     events: list[HabitEvent] = habit_tracker_client.list_habit_events(hbt.habit_id)
-    dataframe = transform_to_panda_dataframe(events, hbt.periodicity)
+    history = get_habit_events_history(events, hbt.periodicity)
 
-    if len(dataframe.index) == 0:
+    if len(history.index) == 0:
         click.echo("No data registered")
         return
 
-    click.echo(tabulate_dataframe(dataframe))
+    click.echo(tabulate_dataframe(history))
 
 
 @habit.command()
@@ -91,10 +91,10 @@ def history(habit_tracker_client: HabitTrackerClient, habit_id: int):
 def statistic(habit_tracker_client: HabitTrackerClient, habit_id: int):
     hbt = habit_tracker_client.get_habit_by_id(habit_id)
     events: list[HabitEvent] = habit_tracker_client.list_habit_events(hbt.habit_id)
-    dataframe = transform_to_panda_dataframe(events, hbt.periodicity)
+    stats = get_habit_events_statistic(events, hbt.periodicity)
 
-    if len(dataframe.index) == 0:
+    if stats.empty:
         click.echo("No data registered")
         return
 
-    click.echo(tabulate_dataframe(get_habit_events_statistic(dataframe)))
+    click.echo(tabulate_dataframe(stats))

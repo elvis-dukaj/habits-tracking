@@ -1,7 +1,7 @@
 import pandas
 
 from htr.schemas.habit_event import HabitEvent
-from htr.analytics import transform_to_panda_dataframe
+from htr.analytics import get_habit_events_history
 
 
 def test_transform_to_dataframe_first_and_last_should_be_added():
@@ -25,7 +25,7 @@ def test_transform_to_dataframe_first_and_last_should_be_added():
         "Streak": [2, 1, 2]
     })
 
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     # assert dataframe == expected_dataframe
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
@@ -56,7 +56,7 @@ def test_transform_to_dataframe_first_should_be_added_last_not():
         "Streak": [2, 1, 1]
     })
 
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     # assert dataframe == expected_dataframe
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
@@ -88,7 +88,7 @@ def test_transform_to_dataframe__should__not_add_first_and_last():
     })
 
     periodicity: int = 3
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
     streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
@@ -115,7 +115,7 @@ def test_all_streaks():
     })
 
     periodicity: int = 1
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
     streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
@@ -142,7 +142,7 @@ def test_no_streaks():
     })
 
     periodicity: int = 1
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
     streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])
@@ -164,7 +164,7 @@ def test_no_events():
     })
 
     periodicity: int = 1
-    dataframe = transform_to_panda_dataframe(events, periodicity)
+    dataframe = get_habit_events_history(events, periodicity)
     start_date_col = (dataframe['Start Date'] == expected_dataframe['Start Date'])
     end_date_col = (dataframe['End Date'] == expected_dataframe['End Date'])
     streak_col = (dataframe['Streak'] == expected_dataframe['Streak'])

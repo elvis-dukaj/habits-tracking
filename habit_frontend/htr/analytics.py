@@ -13,7 +13,7 @@ def get_delta_times_grouped_by_consecutive_streak(completed_events: np.ndarray):
     return np.split(partial_diffs, np.where(second_partial_diff != 0)[0] + 1)
 
 
-def transform_to_panda_dataframe(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
+def get_habit_events_history(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
     completed_events: np.ndarray = np.array([event.completed_at for event in events], dtype=np.datetime64)
     deltas = np.diff(completed_events)
 
@@ -93,8 +93,10 @@ def calculate_score(expected_streaks: int, actual_streak: int) -> float:
     return actual_streak / expected_streaks
 
 
-def get_habit_events_statistic(dataframe: pd.DataFrame):
-    if dataframe.empty:
+def get_habit_events_statistic(events: list[HabitEvent], periodicity: int) -> pd.DataFrame:
+    df = get_habit_events_history(events, periodicity)
+
+    if df.empty:
         return pd.DataFrame({
             "Longest": [0],
             "Last": [0],
@@ -103,13 +105,15 @@ def get_habit_events_statistic(dataframe: pd.DataFrame):
             "Total Streaks": [0],
         })
 
-    return pd.DataFrame({
-        "Longest": [dataframe.Streak.max()],
-        "Last": [dataframe.Streak.iloc[-1]],
-        "Median": [dataframe.Streak.median()],
-        "Mean": [dataframe.Streak.mean()],
-        "Total Streaks": [dataframe.Streak.sum()],
+    stat = pd.DataFrame({
+        "Longest": [df.Streak.max()],
+        "Last": [df.Streak.iloc[-1]],
+        "Median": [df.Streak.median()],
+        "Mean": [df.Streak.mean()],
+        "Total Streaks": [df.Streak.sum()],
     })
+
+    return stat
 
 
 def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]]) -> pd.DataFrame:
@@ -125,8 +129,7 @@ def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]])
 
     for habit, events in habits_and_events:
         if len(events) > 0:
-            df = transform_to_panda_dataframe(events, habit.habit_id)
-            stat = get_habit_events_statistic(df)
+            stat = get_habit_events_statistic(events, habit.habit_id)
             current_streaks_list.append(stat['Last'][stat.last_valid_index()])
             longest_streaks_list.append(stat['Longest'][stat.last_valid_index()])
             average_streaks_list.append(stat['Mean'][stat.last_valid_index()])
