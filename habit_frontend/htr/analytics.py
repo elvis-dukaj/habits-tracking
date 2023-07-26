@@ -1,6 +1,3 @@
-import datetime
-from typing import Optional
-
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
@@ -72,15 +69,25 @@ def tabulate_dataframe(dataframe: pd.DataFrame):
 
 
 def get_habit_events_statistic(dataframe: pd.DataFrame):
+    # TODO: the current streak is wrong, it is only the last streak, we could also add the current that could be zero
     col = 'streak'
-    statistics_frame = pd.DataFrame({
-        "Longest": dataframe.max()[col],
-        "Last": dataframe[col][dataframe.last_valid_index()],
-        "Median": dataframe.median()[col],
-        "Mean": dataframe.mean()[col]
-    }, index=[0])
+    if not dataframe.empty:
+        statistics_frame = pd.DataFrame({
+            "Longest": dataframe.max()[col],
+            "Last": dataframe[col][dataframe.last_valid_index()],
+            "Median": dataframe.median()[col],
+            "Mean": dataframe.mean()[col]
+        }, index=[0])
 
-    return statistics_frame
+        return statistics_frame
+
+    else:
+        return pd.DataFrame({
+            "Longest": [0],
+            "Last": [0],
+            "Median": [0],
+            "Mean": [0]
+        })
 
 
 def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]]) -> pd.DataFrame:

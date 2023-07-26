@@ -13,11 +13,11 @@ def statistic(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.set_current_user_id(user_id)
 
 
-@statistic.command(name="all")
+@statistic.command()
 @click.option("--order-by", type=click.Choice(['habit', 'current', 'longest', 'mean', 'periodicity']), default='habit')
 @click.option("--ascending", is_flag=True, default=True)
 @click.pass_obj
-def show_all(habit_tracker_client: HabitTrackerClient, order_by: str, ascending: bool):
+def view(habit_tracker_client: HabitTrackerClient, order_by: str, ascending: bool):
     habits_and_events: list[tuple[Habit, list[HabitEvent]]] = []
     habits = habit_tracker_client.list_habits()
 
