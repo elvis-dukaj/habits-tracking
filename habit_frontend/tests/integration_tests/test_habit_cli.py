@@ -320,6 +320,7 @@ def test_habit_can_show_statistic(mock_endpoint, valid_userid, valid_habit_id, v
         "Last": [1],
         "Median": [2],
         "Mean": [2],
+        "Total Streaks": [4]
     })
 
     assert tabulate_dataframe(df) in res.output

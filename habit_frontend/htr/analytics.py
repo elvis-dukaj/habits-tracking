@@ -1,3 +1,5 @@
+import datetime
+
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
@@ -69,22 +71,44 @@ def tabulate_dataframe(dataframe: pd.DataFrame):
 
 
 def get_habit_events_statistic(dataframe: pd.DataFrame):
-    # TODO: the current streak is wrong, it is only the last streak, we could also add the current that could be zero
-    col = 'streak'
+    # TODO: we could add also the expected streak for the data range! so could calculate a score for the habit
     if dataframe.empty:
         return pd.DataFrame({
             "Longest": [0],
             "Last": [0],
             "Median": [0],
-            "Mean": [0]
+            "Mean": [0],
+            "Total Streaks": [0]
         })
 
     return pd.DataFrame({
-        "Longest": [dataframe.max()[col]],
-        "Last": [dataframe[col][dataframe.last_valid_index()]],
-        "Median": [dataframe.median()[col]],
-        "Mean": [dataframe.mean()[col]]
+        "Longest": [dataframe.streak.max()],
+        "Last": [dataframe.streak.iloc[-1]],
+        "Median": [dataframe.streak.median()],
+        "Mean": [dataframe.streak.mean()],
+        "Total Streaks": [dataframe.streak.sum()]
     })
+
+
+def get_expected_streaks(events: list[HabitEvent], periodicity: int) -> int:
+    if len(events) < 2:
+        return 0
+
+    start_date: datetime.date = events[0].completed_at
+    end_date: datetime.date = events[-1].completed_at
+
+    elapsed = end_date - start_date
+    elapsed_days = elapsed.days
+
+    return elapsed_days // periodicity
+
+
+def calculate_total_streaks(df: pd.DataFrame) -> int:
+    pass
+
+
+def calculate_score(expected_streaks: int, actual_streak: int) -> float:
+    return expected_streaks / actual_streak
 
 
 def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]]) -> pd.DataFrame:
@@ -95,6 +119,8 @@ def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]])
     current_streaks_list: list[int] = []
     longest_streaks_list: list[int] = []
     average_streaks_list: list[float] = []
+    expected_streak_list: list[int] = []
+    expected_score_list: list[float] = []
 
     for habit, events in habits_and_events:
         if len(events) > 0:
@@ -103,14 +129,19 @@ def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]])
             current_streaks_list.append(stat['Last'][stat.last_valid_index()])
             longest_streaks_list.append(stat['Longest'][stat.last_valid_index()])
             average_streaks_list.append(stat['Mean'][stat.last_valid_index()])
+            expected_streak_list.append(get_expected_streaks(events, habit.periodicity))
+            # expected_score_list.append(ca(events, habit.periodicity))
         else:
             current_streaks_list.append(0)
             longest_streaks_list.append(0)
             average_streaks_list.append(0)
+            expected_streak_list.append(0)
+            # expected_score_list.append(0)
 
     current_streaks: pd.Series = pd.Series(current_streaks_list)
     longest_streaks: pd.Series = pd.Series(longest_streaks_list)
     average_streaks: pd.Series = pd.Series(average_streaks_list)
+    expected_streak: pd.Series = pd.Series(expected_streak_list)
 
     return pd.DataFrame({
         "Habit ID": habit_id_series,
@@ -119,4 +150,5 @@ def calculate_statistic(habits_and_events: list[tuple[Habit, list[HabitEvent]]])
         "Last Streak": current_streaks,
         "Longest Streak": longest_streaks,
         "Average Streak": average_streaks,
+        "Expected Streaks": expected_streak
     })

@@ -93,6 +93,7 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
     expected_last_streaks = [1, 1, 0, 2, 0, 0, 0]
     expected_longest_streaks = [3, 1, 0, 2, 0, 0, 0]
     expected_mean_streaks = [2, 1, 0, 2, 0, 0, 0]
+    expected_expected_streak = [41, 1, 0, 2, 17, 0, 0]
 
     expected_dataframe = pandas.DataFrame({
         "Habit ID": habits_id,
@@ -101,6 +102,7 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
         "Last Streak": expected_last_streaks,
         "Longest Streak": expected_longest_streaks,
         "Average Streak": expected_mean_streaks,
+        "Expected Streaks": expected_expected_streak
     })
 
     runner = CliRunner()
@@ -356,6 +358,7 @@ def test_habit_can_show_statistic(mock_endpoint, valid_userid, valid_habit_id, v
         "Last": [1],
         "Median": [2],
         "Mean": [2],
+        "Total Streaks": [4]
     })
 
     assert tabulate_dataframe(df) in res.output
