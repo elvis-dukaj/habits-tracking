@@ -16,9 +16,10 @@ class HabitTrackerClient:
     def set_current_user_id(self, user_id: int):
         self._current_user_id = user_id
 
-    def add_user(self, username: str) -> int:
+    def add_user(self, username: str, created_at: datetime.date) -> int:
         json_body = {
-            "username": username
+            "username": username,
+            "created_at": str(created_at)
         }
 
         response = requests.post(url=self.user_prefix, json=json_body)
@@ -48,11 +49,12 @@ class HabitTrackerClient:
 
         return user_id
 
-    def create_habit(self, task: str, periodicity: int):
+    def create_habit(self, task: str, periodicity: int, created_at: datetime.date):
         json_body = {
             "user_id": self._current_user_id,
             "task": task,
-            "periodicity": periodicity
+            "periodicity": periodicity,
+            "created_at": str(created_at)
         }
 
         response = requests.post(url=self.habit_prefix, json=json_body)

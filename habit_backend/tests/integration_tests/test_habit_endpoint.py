@@ -1,32 +1,40 @@
+import datetime
+
 from app.schemas import HabitRead
 
 
 def test_habit_create_success(mock_application, habit_url, valid_user_id):
+    today = datetime.date.today()
     habit_json_list = [
         {
             "user_id": valid_user_id,
             "task": "exercises for the back pain",
-            "periodicity": 1
+            "periodicity": 1,
+            "created_at": str(today)
         },
         {
             "user_id": valid_user_id,
             "task": "do the exercises for the neck",
-            "periodicity": 1
+            "periodicity": 1,
+            "created_at": str(today)
         },
         {
             "user_id": valid_user_id,
             "task": "bouldering",
-            "periodicity": 3
+            "periodicity": 3,
+            "created_at": str(today)
         },
         {
             "user_id": valid_user_id,
             "task": "exercises fro the back pain",
-            "periodicity": 1
+            "periodicity": 1,
+            "created_at": str(today)
         },
         {
             "user_id": valid_user_id,
             "task": "call my parents",
-            "periodicity": 7
+            "periodicity": 7,
+            "created_at": str(today)
         },
     ]
 
@@ -42,6 +50,7 @@ def test_habit_create_success(mock_application, habit_url, valid_user_id):
         assert created_habit.user_id == 1
         assert created_habit.task == json_body["task"]
         assert created_habit.periodicity == json_body["periodicity"]
+        assert created_habit.created_at == today
         assert response.status_code == 201
 
 

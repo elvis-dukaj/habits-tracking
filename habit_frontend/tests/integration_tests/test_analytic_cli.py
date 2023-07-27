@@ -1,3 +1,5 @@
+import datetime
+
 import pandas
 from click.testing import CliRunner
 import responses
@@ -10,6 +12,7 @@ from htr.analytics import tabulate_dataframe
 
 @responses.activate
 def test_can_calculate_statistics(mock_endpoint, valid_userid):
+    created_time = datetime.date.fromisoformat("2023-07-01")
     habits_id = [1, 2, 3, 10, 11, 12, 13]
     habits_task = [
         "doing yoga in the morning",
@@ -30,6 +33,7 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
                 "habit_id": habit_id,
                 "task": task,
                 "periodicity": periodicity,
+                "created_at": str(created_time)
             }
         )
 
@@ -114,7 +118,7 @@ def test_can_calculate_statistics(mock_endpoint, valid_userid):
 
 
 @responses.activate
-def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid):
+def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid, valid_habit_created_at):
     habits_with_periodicity_1_json: list = []
 
     for habit_id in range(10):
@@ -123,6 +127,7 @@ def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid):
             "habit_id": habit_id,
             "task": f"task {habit_id}",
             "periodicity": 1,
+            "created_at": valid_habit_created_at
         })
 
     responses.get(
@@ -154,7 +159,7 @@ def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
 
 @responses.activate
 def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                         valid_habit_event_completed_date, valid_habit_task):
+                                         valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     responses.post(
         url=f"{mock_endpoint}/habit_event",
         json={
@@ -171,7 +176,8 @@ def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habi
             "user_id": valid_userid,
             "task": valid_habit_task,
             "periodicity": 3,
-            "habit_id": valid_habit_id
+            "habit_id": valid_habit_id,
+            "created_at": valid_habit_created_at
         }
     )
 
@@ -184,12 +190,13 @@ def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habi
 
 @responses.activate
 def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                valid_habit_event_completed_date, valid_habit_task):
+                                valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     habit_json = {
         "user_id": valid_userid,
         "task": valid_habit_task,
         "periodicity": 1,
-        "habit_id": valid_habit_id
+        "habit_id": valid_habit_id,
+        "created_at": valid_habit_created_at
     }
 
     responses.get(
@@ -261,12 +268,13 @@ def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, val
 
 @responses.activate
 def test_habit_can_show_statistic(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                  valid_habit_event_completed_date, valid_habit_task):
+                                  valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     habit_json = {
         "user_id": valid_userid,
         "task": valid_habit_task,
         "periodicity": 1,
-        "habit_id": valid_habit_id
+        "habit_id": valid_habit_id,
+        "created_at": valid_habit_created_at
     }
 
     responses.get(

@@ -1,4 +1,6 @@
 from typing import Optional
+import datetime
+
 from sqlmodel import SQLModel, Field
 
 
@@ -6,6 +8,7 @@ class HabitBase(SQLModel):
     user_id: int = Field(index=True, foreign_key="user.user_id")
     task: str
     periodicity: int
+    created_at: datetime.date
 
 
 class Habit(HabitBase, table=True):

@@ -10,7 +10,7 @@ from htr.analytics import get_habit_events_statistic, tabulate_dataframe, get_ha
 
 
 @cli.group()
-@click.option("--user-id", "user_id", envvar="HABIT_TRACKER_USER_ID", type=click.INT, help="user", required=True)
+@click.option("--user-id", envvar="HABIT_TRACKER_USER_ID", type=click.INT, help="user", required=True)
 @click.pass_obj
 def habit(habit_tracker_client: HabitTrackerClient, user_id: int):
     habit_tracker_client.set_current_user_id(user_id)
@@ -32,9 +32,11 @@ def list_habits(habit_tracker_client: HabitTrackerClient, periodicity: Optional[
 @habit.command()
 @click.option("--task", prompt=True, help="short description of the task")
 @click.option("--periodicity", prompt=True, type=click.INT, help="periodicity in days")
+@click.option("--date", "created_at", required=True, type=click.DateTime(formats=["%Y-%m-%d"]),
+              prompt=True, help="created date")
 @click.pass_obj
-def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int):
-    habit_id = habit_tracker_client.create_habit(task, periodicity)
+def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int, created_at: datetime.date):
+    habit_id = habit_tracker_client.create_habit(task, periodicity, created_at)
     click.echo(f"Habit '{task}' created with id {habit_id}")
 
 

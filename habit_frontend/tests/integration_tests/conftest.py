@@ -17,6 +17,11 @@ def valid_userid():
 
 
 @pytest.fixture
+def valid_user_created_at():
+    return "2023-07-01"
+
+
+@pytest.fixture
 def valid_habit_id():
     return 200
 
@@ -24,6 +29,11 @@ def valid_habit_id():
 @pytest.fixture
 def valid_habit_task():
     return "test task"
+
+
+@pytest.fixture
+def valid_habit_created_at():
+    return "2023-07-01"
 
 
 @pytest.fixture

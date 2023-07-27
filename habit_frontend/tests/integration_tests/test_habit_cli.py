@@ -1,3 +1,5 @@
+import datetime
+
 import pandas
 from click.testing import CliRunner
 import responses
@@ -9,7 +11,8 @@ from htr.analytics import tabulate_dataframe
 
 
 @responses.activate
-def test_habit_can_create(mock_endpoint, valid_userid, valid_habit_task, valid_habit_id):
+def test_habit_can_create(mock_endpoint, valid_userid, valid_habit_task, valid_habit_id, valid_habit_event_id,
+                          valid_habit_created_at):
     expected_periodicity: int = 3
 
     responses.post(
@@ -18,20 +21,22 @@ def test_habit_can_create(mock_endpoint, valid_userid, valid_habit_task, valid_h
             "task": valid_habit_task,
             "user_id": valid_userid,
             "periodicity": expected_periodicity,
-            "habit_id": valid_habit_id
+            "habit_id": valid_habit_id,
+            "created_at": valid_habit_created_at
         },
         status=201
     )
 
     runner = CliRunner()
     res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'habit', '--user-id', valid_userid, 'create', '--task',
-                              valid_habit_task, "--periodicity", expected_periodicity])
+                              valid_habit_task, "--periodicity", expected_periodicity, "--date",
+                              valid_habit_created_at])
 
     assert f"Habit '{valid_habit_task}' created with id {valid_habit_id}" in res.output
 
 
 @responses.activate
-def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
+def test_habit_can_list_all_habits(mock_endpoint, valid_userid, valid_habit_created_at):
     json_body = []
 
     for habit_id in range(10):
@@ -40,6 +45,7 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
             "habit_id": habit_id,
             "task": f"task {habit_id}",
             "periodicity": 1,
+            "created_at": valid_habit_created_at
         })
 
     for habit_id in range(10, 20):
@@ -48,6 +54,7 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
             "habit_id": habit_id,
             "task": f"task {habit_id}",
             "periodicity": 3,
+            "created_at": valid_habit_created_at
         })
 
     for habit_id in range(20, 30):
@@ -56,6 +63,7 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
             "habit_id": habit_id,
             "task": f"task {habit_id}",
             "periodicity": 5,
+            "created_at": valid_habit_created_at
         })
 
     responses.get(
@@ -73,7 +81,7 @@ def test_habit_can_list_all_habits(mock_endpoint, valid_userid):
 
 
 @responses.activate
-def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid):
+def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid, valid_habit_created_at):
     habits_with_periodicity_1_json: list = []
 
     for habit_id in range(10):
@@ -82,6 +90,7 @@ def test_habit_can_list_habits_by_periodicity(mock_endpoint, valid_userid):
             "habit_id": habit_id,
             "task": f"task {habit_id}",
             "periodicity": 1,
+            "created_at": valid_habit_created_at
         })
 
     responses.get(
@@ -113,7 +122,7 @@ def test_habit_can_be_deleted(mock_endpoint, valid_userid, valid_habit_id):
 
 @responses.activate
 def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                         valid_habit_event_completed_date, valid_habit_task):
+                                         valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     responses.post(
         url=f"{mock_endpoint}/habit_event",
         json={
@@ -130,7 +139,8 @@ def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habi
             "user_id": valid_userid,
             "task": valid_habit_task,
             "periodicity": 3,
-            "habit_id": valid_habit_id
+            "habit_id": valid_habit_id,
+            "created_at": valid_habit_created_at
         }
     )
 
@@ -143,12 +153,13 @@ def test_habit_can_be_marked_as_complete(mock_endpoint, valid_userid, valid_habi
 
 @responses.activate
 def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                valid_habit_event_completed_date, valid_habit_task):
+                                valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     habit_json = {
         "user_id": valid_userid,
         "task": valid_habit_task,
         "periodicity": 1,
-        "habit_id": valid_habit_id
+        "habit_id": valid_habit_id,
+        "created_at": valid_habit_created_at
     }
 
     responses.get(
@@ -220,12 +231,13 @@ def test_habit_can_show_history(mock_endpoint, valid_userid, valid_habit_id, val
 
 @responses.activate
 def test_habit_can_show_statistic(mock_endpoint, valid_userid, valid_habit_id, valid_habit_event_id,
-                                  valid_habit_event_completed_date, valid_habit_task):
+                                  valid_habit_event_completed_date, valid_habit_task, valid_habit_created_at):
     habit_json = {
         "user_id": valid_userid,
         "task": valid_habit_task,
         "periodicity": 1,
-        "habit_id": valid_habit_id
+        "habit_id": valid_habit_id,
+        "created_at": valid_habit_created_at
     }
 
     responses.get(

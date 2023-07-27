@@ -5,6 +5,7 @@ from sqlmodel import SQLModel, Field
 
 class UserBase(SQLModel):
     username: str
+    created_at: datetime.date
 
 
 class User(UserBase, table=True):

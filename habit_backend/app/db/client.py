@@ -19,13 +19,12 @@ class DatabaseClient:
         self.engine = engine
 
     def add_user(self, user: UserCreate):
-        created_user = user
         with Session(self.engine) as session:
-            db_hero = User.from_orm(user)
-            session.add(db_hero)
+            created_user = User.from_orm(user)
+            session.add(created_user)
             session.commit()
-            session.refresh(db_hero)
-            return db_hero
+            session.refresh(created_user)
+            return created_user
 
     def delete_user(self, user_id):
         with Session(self.engine) as session:

@@ -1,9 +1,12 @@
+import datetime
+
 from app.schemas import UserRead, UserCreate
 
 
 def test_user_create_success(mock_application, user_url, valid_user_id, valid_username):
     json_body = {
         "username": valid_username,
+        "created_at": str(datetime.date.today())
     }
     response = mock_application.post(url=user_url, json=json_body)
 

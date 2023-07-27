@@ -5,18 +5,24 @@ from htr.cli import cli
 
 
 @responses.activate
-def test_user_can_create(mock_endpoint, valid_username, valid_userid):
+def test_user_can_create(mock_endpoint, valid_username, valid_userid, valid_habit_created_at):
     responses.post(
         url=f"{mock_endpoint}/user",
         json={
             "username": valid_username,
             "user_id": valid_userid,
+            "created_at": valid_habit_created_at
         },
         status=201
     )
 
     runner = CliRunner()
-    res = runner.invoke(cli, ['--endpoint', mock_endpoint, 'user', 'create', '--username', valid_username])
+    res = runner.invoke(
+        cli, [
+            '--endpoint', mock_endpoint, 'user', 'create', '--username', valid_username, "--date",
+            valid_habit_created_at
+        ]
+    )
 
     assert f"User '{valid_username}' created with user-id {valid_userid}" in res.output
 
