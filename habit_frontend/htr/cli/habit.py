@@ -32,8 +32,8 @@ def list_habits(habit_tracker_client: HabitTrackerClient, periodicity: Optional[
 @habit.command()
 @click.option("--task", prompt=True, help="short description of the task")
 @click.option("--periodicity", prompt=True, type=click.INT, help="periodicity in days")
-@click.option("--date", "created_at", required=True, type=click.DateTime(formats=["%Y-%m-%d"]),
-              prompt=True, help="created date")
+@click.option("--date", "created_at", type=click.DateTime(formats=["%Y-%m-%d"]), default=str(datetime.date.today()),
+              help="Creation date")
 @click.pass_obj
 def create(habit_tracker_client: HabitTrackerClient, task: str, periodicity: int, created_at: datetime.date):
     habit_id = habit_tracker_client.create_habit(task, periodicity, created_at)

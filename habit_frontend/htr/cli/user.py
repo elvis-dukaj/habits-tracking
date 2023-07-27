@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 import click
 
@@ -15,7 +16,7 @@ def user(habit_tracker_client: HabitTrackerClient):
 @user.command()
 @click.pass_obj
 @click.option("--username", prompt=True, help="Username")
-@click.option("--date", "created_at", default=datetime.date.today(), type=click.DateTime(formats=["%Y-%m-%d"]),
+@click.option("--date", "created_at", type=click.DateTime(formats=["%Y-%m-%d"]), default=str(datetime.date.today()),
               help="Creation date")
 def create(client: HabitTrackerClient, username: str, created_at: datetime.date):
     user_id = client.add_user(username, created_at)
