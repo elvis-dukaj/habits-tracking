@@ -1,7 +1,7 @@
 import pandas
 
 from htr.schemas.habit_event import HabitEvent
-from htr.analytics import get_habit_events_history
+from htr.analytics.analytics import get_habit_events_history
 
 
 def test_transform_to_dataframe_first_and_last_should_be_added():

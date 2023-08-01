@@ -6,7 +6,6 @@ import responses
 from tabulate import tabulate
 
 from htr.cli import cli
-from htr.schemas import Habit, HabitEvent
 from htr.analytics import tabulate_dataframe
 
 
